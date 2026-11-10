@@ -72,19 +72,21 @@
   async function connect() {
     if (!window.supabase || !C.SUPABASE_URL) return;
     sb = window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
-    let { data: { session } } = await sb.auth.getSession();
-    if (!session) {
-      if (!navigator.onLine) return;
-      const r = await sb.auth.signInAnonymously();
-      if (r.error) { toast("Sign-in failed: " + r.error.message); return; }
-      session = r.data.session;
-    }
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { render(); if (navigator.onLine) showJoin(); return; }
+    await afterSignIn(session);
+  }
+  async function afterSignIn(session) {
     uid = session.user.id;
-    const { data: me, error } = await sb.from("members").select("*").eq("trip_id", TRIP).eq("user_id", uid).maybeSingle();
-    if (error && !/fetch/i.test(error.message)) toast(error.message);
-    if (me) { joined = true; myName = me.name; localStorage.setItem("jt-name", myName); await loadAll(); subscribe(); flush(); }
-    else showJoin();
-    render();
+    const { data: name, error } = await sb.rpc("claim_membership", { p_trip: TRIP });
+    if (error) {
+      const cached = localStorage.getItem("jt-name");
+      if (/fetch|network|Failed/i.test(error.message) && cached) { joined = true; myName = cached; render(); updateSync(); return true; } // offline: keep working from the saved copy
+      toast(error.message); render(); return false;
+    }
+    if (!name) { toast("This number isn't on the trip list"); await sb.auth.signOut(); uid = null; render(); return false; }
+    joined = true; myName = name; localStorage.setItem("jt-name", myName);
+    await loadAll(); subscribe(); flush(); render(); return true;
   }
   async function loadAll() {
     const q = (t, o) => { let x = sb.from(t).select("*").eq("trip_id", TRIP); return o ? x.order(o) : x; };
@@ -116,23 +118,39 @@
   window.addEventListener("offline", () => { online = false; updateSync(); });
   document.addEventListener("visibilitychange", () => { if (!document.hidden && sb && joined) { loadAll(); flush(); } });
 
-  // ---------------- join ----------------
+  // ---------------- sign in (phone + PIN) ----------------
+  // Each phone maps to a hidden login <digits>@phone.example.com; only the 4 trip numbers exist (trip_allowlist).
+  const phoneLogin = (v) => { let d = String(v).replace(/\D/g, ""); if (d.length === 11 && d[0] === "0") d = d.slice(1); if (d.length === 10) d = "91" + d; return d + "@phone.example.com"; };
   function showJoin() {
-    const pick = C.PEOPLE.map((p) => `<button type="button" class="pchip" data-name="${p}">${p}</button>`).join("");
-    modal(`<h3>Join the trip</h3><p class="muted">Pick your name and enter the trip passcode (ask Naman).</p>
-      <div class="pchips">${pick}</div><label>Your name<input name="name" required maxlength="40" value="${esc(localStorage.getItem("jt-name") || "")}"></label>
-      <label>Trip passcode<input name="code" required autocomplete="off" autocapitalize="off"></label>
-      <div class="mbtns"><button class="primary" value="join">Join</button></div>`, async (f, btn) => {
-      if (btn !== "join") return true;
-      const name = f.name.value.trim(), code = f.code.value.trim();
-      if (!name || !code) return false;
-      const { data, error } = await sb.rpc("join_trip", { p_trip: TRIP, p_code: code, p_name: name });
-      if (error) { toast(error.message); return false; }
-      if (!data) { toast("Wrong passcode"); return false; }
-      joined = true; myName = name; localStorage.setItem("jt-name", name);
-      await loadAll(); subscribe(); flush(); render(); return true;
-    }, { closable: false });
-    $("#mform").addEventListener("click", (e) => { const b = e.target.closest(".pchip"); if (b) $("#mform").name.value = b.dataset.name; });
+    if (!sb) { toast("Offline · sign in when you're back online"); return; }
+    if (joined) return showAccount();
+    modal(`<h3>Sign in</h3><p class="muted">Use your phone number and the 6-digit PIN Naman sent you.</p>
+      <label>Phone number<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98xxxxxxxx" required></label>
+      <label>PIN<input name="pin" type="password" inputmode="numeric" autocomplete="current-password" minlength="6" maxlength="20" required></label>
+      <div class="mbtns"><button type="button" value="cancel" data-close>Just look</button><button class="primary" value="signin">Sign in</button></div>`, async (f, btn) => {
+      if (btn !== "signin") return true;
+      const { data, error } = await sb.auth.signInWithPassword({ email: phoneLogin(f.phone.value), password: f.pin.value.trim() });
+      if (error) { toast(/invalid/i.test(error.message) ? "Wrong phone number or PIN" : error.message); return false; }
+      return afterSignIn(data.session);
+    });
+  }
+  function showAccount() {
+    modal(`<h3>👤 ${esc(myName || "")}</h3>
+      <label>Display name<input name="name" maxlength="40" value="${esc(myName || "")}"></label>
+      <label>New PIN (optional)<input name="pin" type="password" inputmode="numeric" autocomplete="new-password" minlength="6" maxlength="20" placeholder="leave blank to keep"></label>
+      <div class="mbtns"><button type="button" class="danger" data-act="signout">Sign out</button><button type="button" data-close>Close</button><button class="primary" value="save">Save</button></div>`, async (f, btn) => {
+      if (btn !== "save") return true;
+      const name = f.name.value.trim(), pin = f.pin.value.trim();
+      if (pin) { const { error } = await sb.auth.updateUser({ password: pin }); if (error) { toast(error.message); return false; } toast("PIN changed"); }
+      if (name && name !== myName) { const { error } = await sb.from("members").update({ name }).match({ trip_id: TRIP, user_id: uid }); if (error) { toast(error.message); return false; } myName = name; localStorage.setItem("jt-name", name); await loadAll(); }
+      render(); return true;
+    });
+  }
+  async function signOut() {
+    if (!sb) return; $("#modal").close();
+    await sb.auth.signOut(); sb.removeAllChannels();
+    joined = false; uid = null; myName = null; live = false; localStorage.removeItem("jt-name");
+    render(); updateSync(); showJoin();
   }
 
   // ---------------- render ----------------
@@ -142,7 +160,7 @@
 
   function render() {
     renderNow(); renderPlan(); renderIdeas(); renderChat(); renderInfo(); updateSync();
-    $("#mename").textContent = myName || "Who are you?";
+    $("#mename").textContent = joined ? myName : "Sign in";
     document.body.classList.toggle("editing", editMode);
     $("#editbar").hidden = !editMode;
   }
@@ -261,7 +279,7 @@
     const pend = outbox.length;
     let t, c;
     if (!navigator.onLine) { t = pend ? `Offline · ${pend} change${pend > 1 ? "s" : ""} waiting` : "Offline · showing saved copy"; c = "off"; }
-    else if (!sb || !joined) { t = "Not joined yet"; c = "off"; }
+    else if (!sb || !joined) { t = "Not signed in"; c = "off"; }
     else if (pend) { t = `Syncing ${pend}…`; c = "wait"; }
     else { t = live ? "Live · synced" : "Synced"; c = "ok"; }
     el.textContent = t; el.className = "sync " + c;
@@ -383,6 +401,8 @@
     if (d.act === "editon") { if (!joined) return showJoin(); editMode = true; tab = "plan"; showTab(); render(); toast("Edit mode on · tap ✏️ on any stop"); return; }
     if (d.act === "editoff") { editMode = false; render(); return; }
     if (d.act === "rename") { showJoin(); return; }
+    if (d.act === "signout") { signOut(); return; }
+    if (d.close !== undefined) { $("#modal").close(); return; }
     if (d.act === "refresh") { if (sb && joined) loadAll(); return; }
     if (t.id === "mebtn") { if (sb) showJoin(); return; }
   });
@@ -410,7 +430,6 @@
     if (!loadCache()) {
       try { const r = await fetch("data/seed.json", { cache: "no-cache" }); const seed = await r.json(); S.days = seed.days; S.stops = seed.stops.map((s, i) => Object.assign({ id: "seed" + i }, s)); } catch (e) {}
     }
-    myName = localStorage.getItem("jt-name");
     render(); showTab();
     setInterval(() => { renderNow(); if (tab === "plan") renderPlan(); }, 60000);
     connect().catch((e) => { console.error(e); updateSync(); });
