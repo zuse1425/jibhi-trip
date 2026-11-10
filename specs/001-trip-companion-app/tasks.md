@@ -10,7 +10,7 @@
 - [x] T005 Vendor supabase-js v2.119 UMD; `config.js` with publishable key
 - [x] T006 Spec Kit init (Claude integration), constitution
 - [x] T007 ~~Enable Anonymous sign-ins~~ — replaced by Google sign-in + email allowlist (`trip_allowlist`, `claim_membership`)
-- [ ] T008 Create GitHub repo `zuse1425/jibhi-trip` (public), push, enable Pages → "GitHub Actions"
+- [x] T008 Create GitHub repo `zuse1425/jibhi-trip` (public), push, enable Pages → "GitHub Actions"
 
 ## Phase 2 — US1/US2 Plan & Now (P1) ✅
 - [x] T010 App shell (tabs: Plan / Ideas / Chat / Info), design tokens, dark mode
@@ -25,7 +25,7 @@
 - [x] T022 Optimistic writes + localStorage outbox + flush on reconnect
 - [x] T023 PWA: manifest, icons, service worker
 - [ ] T024 Field test on 2 phones: join, edit, idea→decide, chat, airplane-mode queue
-- [ ] T025 Run Supabase security + performance advisors; fix findings
+- [x] T025 Run Supabase security + performance advisors; fix findings
 
 ## Phase 4 — US3/US4/US5 ✅ (needs field test)
 - [x] T030 Ideas board: create, vote, comment, decide→stop, drop, reopen, filters, badge
@@ -34,7 +34,7 @@
 
 ## Phase 5 — Nice to have
 - [ ] T040 Mark Sun/Mon option as chosen (hide the other) — add `trip_settings` table
-- [ ] T041 Expenses split (who paid what)
+- [ ] T041 Expenses split (who paid what) — moved to `specs/002-trip-platform` (US4)
 - [ ] T042 Photo sharing (Supabase Storage)
-- [ ] T043 Live location share (opt-in)
-- [ ] T044 Wrap as Android APK via PWABuilder (TWA) if wanted
+- [ ] T043 Live location share (opt-in) — moved to `specs/002-trip-platform` (US6)
+- [x] T044 ~~Wrap as Android APK~~ — dropped: the web app installs from the browser on Android and iOS

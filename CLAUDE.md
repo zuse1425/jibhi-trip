@@ -5,7 +5,9 @@ Group trip companion for 4 friends (Jibhi · Jalori · Tirthan, 13–16 Nov 2026
 ## Read first
 - `docs/trip-context.md` — the full trip plan, people, timings, decisions (source of truth for content).
 - `.specify/memory/constitution.md` — principles (phone-first, place-first map links, live + offline, zero build, RLS, plan vs ideas).
-- `specs/001-trip-companion-app/` — spec, plan, data model, tasks (check `tasks.md` for what's left).
+- `specs/001-trip-companion-app/` — the current live app (vanilla JS at the repo root).
+- `specs/002-trip-platform/` — **the next app** (React in `web/`, multi-trip, expenses, map, AI). Build from its `tasks.md`, top to bottom.
+- `docs/wireframes.html` (screens) and `docs/design-system.md` (colours, type, components, UX rules) — follow both for all new UI.
 
 ## Workflow (Spec Kit / SDD)
 New work: `/speckit-specify` → `/speckit-clarify` (optional) → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`. Keep `tasks.md` checkboxes current.

@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trip app wireframes v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F5F9FF;color:#14213D;font-family:"Plus Jakarta Sans",system-ui,sans-serif}
+header.top{max-width:1760px;margin:0 auto;padding:32px 20px 8px}
+header.top h1{margin:0 0 6px;font-size:28px}header.top p{margin:0;color:#4B5563;font-size:15px;line-height:1.5;max-width:70ch}
+main{max-width:1760px;margin:0 auto;padding:16px 20px 48px;display:grid;grid-template-columns:repeat(auto-fill,minmax(390px,1fr));gap:40px 30px;justify-items:center}
+figure{margin:0;width:390px;max-width:100%}
+figcaption{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;min-height:66px}
+figcaption b{font-size:16px}figcaption span{font-size:13px;line-height:1.45;color:#4B5563}
+.phone{width:390px;height:844px;border-radius:28px;overflow:hidden;border:1px solid #D1D5DB;box-shadow:0 8px 30px rgba(20,33,61,.08);background:#fff}
+.phone a{color:#0369A1}
+@media(max-width:430px){main{padding:16px 0 48px}figcaption{padding:0 16px}.phone{transform-origin:top left;transform:scale(calc(100vw / 390px));border-radius:0}}
+</style></head><body>
+<header class="top"><h1>Trip app wireframes v1</h1>
+<p>Low-fidelity screens for feature 002 (trip platform). Times, places and amounts are sample data. Colours follow docs/design-system.md. Source canvas: exported from the design artifact on 10 Nov 2026.</p></header>
+<main>
+<figure id="main"><figcaption><b>1 · Trips</b><span>I sign in and see only my trips; I open one or start a new one.</span></figcaption><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FFFFFF; color: #14213D; font-family: Plus Jakarta Sans,system-ui, sans-serif">
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: 28px 20px 16px">
+    <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em">Your trips</h1>
+    <button type="button" aria-label="Account" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid #D1D5DB; background: #F3F4F6; color: #14213D; font: 600 15px Plus Jakarta Sans,sans-serif">N</button>
+  </header>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 4px 20px 20px">
+    <a href="#today" style="display: flex; flex-direction: column; border: 1px solid #D1D5DB; border-radius: 16px; overflow: hidden; text-decoration: none; color: #14213D">
+      <div style="height: 150px; background: #E0F2FE; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #4B5563; border-bottom: 1px solid #D1D5DB">Cover photo</div>
+      <div style="display: flex; flex-direction: column; gap: 8px; padding: 16px">
+        <div style="font-size: 19px; font-weight: 700">Jibhi · Jalori · Tirthan</div>
+        <div style="font-size: 14px; color: #4B5563">13 to 16 Nov · 4 people</div>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px">
+          <span style="font-size: 13px; font-weight: 600; color: #14213D; background: #FFC93C; border-radius: 999px; padding: 6px 12px">Starts in 3 days</span>
+          <div style="display: flex">
+            <span style="width: 28px; height: 28px; border-radius: 14px; background: #E5E7EB; border: 2px solid #FFFFFF; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center">N</span>
+            <span style="width: 28px; height: 28px; border-radius: 14px; background: #E5E7EB; border: 2px solid #FFFFFF; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-left: -8px">M</span>
+            <span style="width: 28px; height: 28px; border-radius: 14px; background: #E5E7EB; border: 2px solid #FFFFFF; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-left: -8px">H</span>
+            <span style="width: 28px; height: 28px; border-radius: 14px; background: #E5E7EB; border: 2px solid #FFFFFF; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-left: -8px">S</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#newtrip" style="display: flex; align-items: center; justify-content: center; height: 56px; border: 1.5px dashed #6B7280; border-radius: 16px; font-size: 16px; font-weight: 600; color: #14213D; text-decoration: none">+ New trip</a>
+
+    <p style="margin: 8px 0 0; font-size: 13px; line-height: 1.5; color: #4B5563; text-align: center">You only see trips you have been added to.</p>
+  </div>
+</div></div></figure>
+<figure id="newtrip"><figcaption><b>2 · New trip</b><span>I name the trip, set dates, add friends by email, then let AI draft the plan or start blank.</span></figcaption><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FFFFFF; color: #14213D; font-family: Plus Jakarta Sans,system-ui, sans-serif">
+  <header style="display: flex; align-items: center; gap: 8px; padding: 20px 20px 12px">
+    <a href="#main" style="display: flex; align-items: center; height: 44px; padding-right: 12px; font-size: 15px; font-weight: 600; color: #14213D; text-decoration: none">Back</a>
+    <h1 style="margin: 0; font-size: 22px; font-weight: 700">New trip</h1>
+  </header>
+
+  <form style="flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 8px 20px 20px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <label for="newtrip-nt-name" style="font-size: 13px; font-weight: 600; color: #4B5563">Trip name</label>
+      <input id="newtrip-nt-name" type="text" placeholder="Goa in January" style="height: 48px; box-sizing: border-box; border: 1px solid #9CA3AF; border-radius: 12px; padding: 0 14px; font: 400 16px Plus Jakarta Sans,sans-serif; color: #14213D; background: #FFFFFF">
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="newtrip-nt-from" style="font-size: 13px; font-weight: 600; color: #4B5563">From</label>
+        <input id="newtrip-nt-from" type="text" placeholder="Start date" style="height: 48px; box-sizing: border-box; border: 1px solid #9CA3AF; border-radius: 12px; padding: 0 14px; font: 400 16px Plus Jakarta Sans,sans-serif; color: #14213D; background: #FFFFFF">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="newtrip-nt-to" style="font-size: 13px; font-weight: 600; color: #4B5563">To</label>
+        <input id="newtrip-nt-to" type="text" placeholder="End date" style="height: 48px; box-sizing: border-box; border: 1px solid #9CA3AF; border-radius: 12px; padding: 0 14px; font: 400 16px Plus Jakarta Sans,sans-serif; color: #14213D; background: #FFFFFF">
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <label for="newtrip-nt-people" style="font-size: 13px; font-weight: 600; color: #4B5563">People, by Google email</label>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <span style="font-size: 14px; font-weight: 500; background: #F3F4F6; border: 1px solid #D1D5DB; border-radius: 999px; padding: 7px 12px">You</span>
+        <span style="font-size: 14px; font-weight: 500; background: #F3F4F6; border: 1px solid #D1D5DB; border-radius: 999px; padding: 7px 12px">Mitali</span>
+        <span style="font-size: 14px; font-weight: 500; background: #F3F4F6; border: 1px solid #D1D5DB; border-radius: 999px; padding: 7px 12px">Himanshu</span>
+      </div>
+      <input id="newtrip-nt-people" type="email" placeholder="Add an email" style="height: 48px; box-sizing: border-box; border: 1px solid #9CA3AF; border-radius: 12px; padding: 0 14px; font: 400 16px Plus Jakarta Sans,sans-serif; color: #14213D; background: #FFFFFF">
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <label for="newtrip-nt-brief" style="font-size: 13px; font-weight: 600; color: #4B5563">Describe the trip (optional, for the AI draft)</label>
+      <textarea id="newtrip-nt-brief" placeholder="4 friends, mountains, cafes, one easy hike, cab from Hoshiarpur" style="height: 112px; box-sizing: border-box; border: 1px solid #9CA3AF; border-radius: 12px; padding: 12px 14px; font: 400 16px/1.4 Plus Jakarta Sans,sans-serif; color: #14213D; background: #FFFFFF; resize: none"></textarea>
+    </div>
+
+    <div style="flex: 1"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <button type="button" style="height: 52px; border: 0; border-radius: 14px; background: #FFC93C; color: #14213D; font: 600 16px Plus Jakarta Sans,sans-serif">Draft the plan with AI</button>
+      <button type="button" style="height: 52px; border: 1px solid #9CA3AF; border-radius: 14px; background: #FFFFFF; color: #14213D; font: 600 16px Plus Jakarta Sans,sans-serif">Start with a blank plan</button>
+    </div>
+  </form>
+</div></div></figure>
+<figure id="today"><figcaption><b>3 · Today</b><span>I open the app and see my own next step, what the group does next, and where everyone is.</span></figcaption><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FFFFFF; color: #14213D; font-family: Plus Jakarta Sans,system-ui, sans-serif">
+  <header style="display: flex; align-items: flex-end; justify-content: space-between; padding: 24px 20px 14px">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <a href="#main" style="font-size: 13px; font-weight: 500; color: #4B5563; text-decoration: none">Jibhi · Jalori · Tirthan</a>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em">Fri 13 Nov</h1>
+    </div>
+    <span style="font-size: 15px; font-weight: 600; color: #4B5563; padding-bottom: 4px">6:10 am</span>
+  </header>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 2px 20px 16px; overflow: hidden">
+    <section style="display: flex; flex-direction: column; gap: 10px; border: 1.5px solid #FFC93C; background: #FFF8E1; border-radius: 16px; padding: 16px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #0369A1">YOUR NEXT STEP</div>
+      <div style="font-size: 19px; font-weight: 700; line-height: 1.25">Bus to Hoshiarpur</div>
+      <div style="font-size: 14px; line-height: 1.45; color: #4B5563">Left Mohali ISBT 4:30 · arrive about 7:30</div>
+      <div style="display: flex; gap: 10px; margin-top: 2px">
+        <a href="#map" style="flex: 1; display: flex; align-items: center; justify-content: center; height: 44px; border-radius: 12px; background: #FFC93C; color: #14213D; font-size: 15px; font-weight: 600; text-decoration: none">Directions</a>
+        <a href="#plan" style="flex: 1; display: flex; align-items: center; justify-content: center; height: 44px; border-radius: 12px; border: 1px solid #9CA3AF; color: #14213D; font-size: 15px; font-weight: 600; text-decoration: none">Full plan</a>
+      </div>
+    </section>
+
+    <section style="display: flex; align-items: center; gap: 14px; border: 1px solid #D1D5DB; border-radius: 16px; padding: 14px 16px">
+      <div style="font-size: 15px; font-weight: 700; width: 48px">8:00</div>
+      <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #4B5563">THEN, EVERYONE</div>
+        <div style="font-size: 16px; font-weight: 600">Meet at Hoshiarpur Bus Stand</div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; border: 1px solid #D1D5DB; border-radius: 16px; padding: 6px 16px">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0 6px">
+        <h2 style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #4B5563">WHERE EVERYONE IS</h2>
+        <a href="#map" style="display: flex; align-items: center; height: 32px; font-size: 14px; font-weight: 600; text-decoration: none">Map</a>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #E5E7EB">
+        <span style="width: 36px; height: 36px; border-radius: 18px; background: #E5E7EB; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0">M</span>
+        <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+          <div style="font-size: 15px; font-weight: 600">Mitali</div>
+          <div style="font-size: 13px; color: #4B5563">On the bus from Pathankot</div>
+        </div>
+        <div style="font-size: 13px; font-weight: 600; text-align: right">about 7:40</div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #E5E7EB">
+        <span style="width: 36px; height: 36px; border-radius: 18px; background: #E5E7EB; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0">H</span>
+        <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+          <div style="font-size: 15px; font-weight: 600">Himanshu and Sirisha</div>
+          <div style="font-size: 13px; color: #4B5563">Cab from Ludhiana, left 6:00</div>
+        </div>
+        <div style="font-size: 13px; font-weight: 600; text-align: right">about 7:45</div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #E5E7EB">
+        <span style="width: 36px; height: 36px; border-radius: 18px; background: #E5E7EB; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0">N</span>
+        <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+          <div style="font-size: 15px; font-weight: 600">You</div>
+          <div style="font-size: 13px; color: #4B5563">On the bus from Mohali</div>
+        </div>
+        <div style="font-size: 13px; font-weight: 600; text-align: right">about 7:30</div>
+      </div>
+    </section>
+
+    <section style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #D1D5DB; border-radius: 16px; padding: 12px 16px">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <div style="font-size: 15px; font-weight: 600">Share my location</div>
+        <div style="font-size: 13px; color: #4B5563">Only while the app is open</div>
+      </div>
+      <button type="button" aria-label="Share my location, on" style="width: 52px; height: 32px; border-radius: 16px; border: 0; background: #047857; padding: 3px; display: flex; justify-content: flex-end; flex-shrink: 0"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; display: block"></span></button>
+    </section>
+  </div>
+
+  <nav style="display: flex; height: 64px; flex-shrink: 0; border-top: 1px solid #D1D5DB; background: #FFFFFF">
+    <a href="#today" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: #0369A1; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: #FFC93C"></span>Today</a>
+    <a href="#plan" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Plan</a>
+    <a href="#explore" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Explore</a>
+    <a href="#chat" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Chat</a>
+    <a href="#money" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Money</a>
+  </nav>
+</div></div></figure>
+<figure id="plan"><figcaption><b>4 · Plan, list</b><span>I see one day as a simple timeline; I tap a stop to edit it or add one.</span></figcaption><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FFFFFF; color: #14213D; font-family: Plus Jakarta Sans,system-ui, sans-serif">
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: 24px 20px 12px">
+    <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em">Plan</h1>
+    <div style="display: flex; border: 1px solid #9CA3AF; border-radius: 12px; overflow: hidden">
+      <a href="#plan" style="display: flex; align-items: center; height: 44px; padding: 0 18px; font-size: 14px; font-weight: 600; background: #14213D; color: #FFFFFF; text-decoration: none">List</a>
+      <a href="#map" style="display: flex; align-items: center; height: 44px; padding: 0 18px; font-size: 14px; font-weight: 600; color: #14213D; text-decoration: none">Map</a>
+    </div>
+  </header>
+
+  <div style="display: flex; gap: 8px; padding: 4px 20px 12px">
+    <button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 0; background: #FFC93C; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">Fri 13</button>
+    <button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #9CA3AF; background: #FFFFFF; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">Sat 14</button>
+    <button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #9CA3AF; background: #FFFFFF; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">Sun 15</button>
+    <button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #9CA3AF; background: #FFFFFF; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">Mon 16</button>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; padding: 0 20px 16px; overflow: hidden">
+    <div style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid #E5E7EB">
+      <div style="width: 48px; font-size: 15px; font-weight: 700">8:00</div>
+      <div style="display: flex; flex-direction: column; gap: 3px; flex: 1">
+        <div style="font-size: 16px; font-weight: 600">Meet up</div>
+        <div style="font-size: 13px; color: #4B5563">Hoshiarpur Bus Stand</div>
+      </div>
+      <a href="#map" style="display: flex; align-items: center; height: 44px; font-size: 14px; font-weight: 600; text-decoration: none">Go</a>
+    </div>
+
+    <div style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid #E5E7EB">
+      <div style="width: 48px; font-size: 15px; font-weight: 700">8:45</div>
+      <div style="display: flex; flex-direction: column; gap: 3px; flex: 1">
+        <div style="font-size: 16px; font-weight: 600">Breakfast</div>
+        <div style="font-size: 13px; color: #4B5563">Tibrewala's, Hoshiarpur</div>
+      </div>
+      <a href="#map" style="display: flex; align-items: center; height: 44px; font-size: 14px; font-weight: 600; text-decoration: none">Go</a>
+    </div>
+
+    <div style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid #E5E7EB">
+      <div style="width: 48px; font-size: 15px; font-weight: 700">10:00</div>
+      <div style="display: flex; flex-direction: column; gap: 3px; flex: 1">
+        <div style="font-size: 16px; font-weight: 600">Drive to Jibhi</div>
+        <div style="font-size: 13px; color: #4B5563">About 6 hours with a lunch stop</div>
+      </div>
+      <a href="#map" style="display: flex; align-items: center; height: 44px; font-size: 14px; font-weight: 600; text-decoration: none">Go</a>
+    </div>
+
+    <div style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid #E5E7EB">
+      <div style="width: 48px; font-size: 15px; font-weight: 700">16:30</div>
+      <div style="display: flex; flex-direction: column; gap: 3px; flex: 1">
+        <div style="font-size: 16px; font-weight: 600">Check in</div>
+        <div style="font-size: 13px; color: #4B5563">[STAY NAME], Jibhi</div>
+      </div>
+      <a href="#map" style="display: flex; align-items: center; height: 44px; font-size: 14px; font-weight: 600; text-decoration: none">Go</a>
+    </div>
+
+    <div style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid #E5E7EB">
+      <div style="width: 48px; font-size: 15px; font-weight: 700">17:30</div>
+      <div style="display: flex; flex-direction: column; gap: 3px; flex: 1">
+        <div style="font-size: 16px; font-weight: 600">Jibhi Waterfall</div>
+        <div style="font-size: 13px; color: #4B5563">Short walk from the road</div>
+      </div>
+      <a href="#map" style="display: flex; align-items: center; height: 44px; font-size: 14px; font-weight: 600; text-decoration: none">Go</a>
+    </div>
+
+    <div style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid #E5E7EB; border-bottom: 1px solid #E5E7EB">
+      <div style="width: 48px; font-size: 15px; font-weight: 700">20:00</div>
+      <div style="display: flex; flex-direction: column; gap: 3px; flex: 1">
+        <div style="font-size: 16px; font-weight: 600">Dinner</div>
+        <div style="font-size: 13px; color: #4B5563">Reverberate Cafe, Jibhi</div>
+      </div>
+      <a href="#map" style="display: flex; align-items: center; height: 44px; font-size: 14px; font-weight: 600; text-decoration: none">Go</a>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: 16px">
+      <button type="button" style="flex: 1; height: 48px; border: 1.5px dashed #6B7280; border-radius: 14px; background: #FFFFFF; color: #14213D; font: 600 15px Plus Jakarta Sans,sans-serif">+ Add stop</button>
+      <a href="#explore" style="flex: 1; display: flex; align-items: center; justify-content: center; height: 48px; border: 1px solid #9CA3AF; border-radius: 14px; color: #14213D; font-size: 15px; font-weight: 600; text-decoration: none">Find with AI</a>
+    </div>
+    <p style="margin: 12px 0 0; font-size: 13px; color: #4B5563; text-align: center">Tap a stop to edit time, place or notes.</p>
+  </div>
+
+  <nav style="display: flex; height: 64px; flex-shrink: 0; border-top: 1px solid #D1D5DB; background: #FFFFFF">
+    <a href="#today" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Today</a>
+    <a href="#plan" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: #0369A1; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: #FFC93C"></span>Plan</a>
+    <a href="#explore" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Explore</a>
+    <a href="#chat" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Chat</a>
+    <a href="#money" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Money</a>
+  </nav>
+</div></div></figure>
+<figure id="map"><figcaption><b>5 · Plan, map</b><span>I see the day&#x27;s stops as numbered pins with the route and my friends&#x27; positions; I tap a pin for directions.</span></figcaption><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FFFFFF; color: #14213D; font-family: Plus Jakarta Sans,system-ui, sans-serif">
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: 24px 20px 12px">
+    <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em">Plan</h1>
+    <div style="display: flex; border: 1px solid #9CA3AF; border-radius: 12px; overflow: hidden">
+      <a href="#plan" style="display: flex; align-items: center; height: 44px; padding: 0 18px; font-size: 14px; font-weight: 600; color: #14213D; text-decoration: none">List</a>
+      <a href="#map" style="display: flex; align-items: center; height: 44px; padding: 0 18px; font-size: 14px; font-weight: 600; background: #14213D; color: #FFFFFF; text-decoration: none">Map</a>
+    </div>
+  </header>
+
+  <div style="display: flex; gap: 8px; padding: 4px 20px 12px">
+    <button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 0; background: #FFC93C; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">Fri 13</button>
+    <button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #9CA3AF; background: #FFFFFF; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">Sat 14</button>
+    <button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #9CA3AF; background: #FFFFFF; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">Sun 15</button>
+    <button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #9CA3AF; background: #FFFFFF; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">All days</button>
+  </div>
+
+  <div style="flex: 1; position: relative; background: #EAF5EC; border-top: 1px solid #D1D5DB; overflow: hidden">
+    <svg aria-hidden="true" viewBox="0 0 390 470" style="position: absolute; left: 0; top: 0; width: 390px; height: 470px">
+      <path d="M-10 120 L400 60" stroke="#FFFFFF" stroke-width="10" fill="none"></path>
+      <path d="M90 -10 L150 480" stroke="#FFFFFF" stroke-width="10" fill="none"></path>
+      <path d="M-10 330 L400 290" stroke="#FFFFFF" stroke-width="8" fill="none"></path>
+      <path d="M300 -10 L250 480" stroke="#FFFFFF" stroke-width="8" fill="none"></path>
+      <path d="M70 390 C120 330 130 300 170 270 C220 235 240 180 290 120" stroke="#14213D" stroke-width="3" stroke-dasharray="7 6" fill="none"></path>
+    </svg>
+
+    <span style="position: absolute; left: 14px; top: 14px; font-size: 12px; font-weight: 600; color: #4B5563; background: #FFFFFF; border: 1px solid #D1D5DB; border-radius: 8px; padding: 5px 9px">Map of the day's stops</span>
+
+    <span style="position: absolute; left: 54px; top: 374px; width: 32px; height: 32px; border-radius: 16px; background: #14213D; color: #FFFFFF; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center">1</span>
+    <span style="position: absolute; left: 100px; top: 326px; width: 36px; height: 36px; border-radius: 18px; background: #FFC93C; color: #14213D; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 5px rgba(255, 201, 60, 0.5)">2</span>
+    <span style="position: absolute; left: 154px; top: 254px; width: 32px; height: 32px; border-radius: 16px; background: #14213D; color: #FFFFFF; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center">3</span>
+    <span style="position: absolute; left: 224px; top: 170px; width: 32px; height: 32px; border-radius: 16px; background: #14213D; color: #FFFFFF; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center">4</span>
+    <span style="position: absolute; left: 274px; top: 104px; width: 32px; height: 32px; border-radius: 16px; background: #14213D; color: #FFFFFF; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center">5</span>
+
+    <span style="position: absolute; left: 28px; top: 430px; height: 28px; padding: 0 10px; border-radius: 14px; background: #FFFFFF; border: 2px solid #14213D; font-size: 12px; font-weight: 700; display: flex; align-items: center">You</span>
+    <span style="position: absolute; left: 200px; top: 392px; height: 28px; padding: 0 10px; border-radius: 14px; background: #FFFFFF; border: 2px solid #14213D; font-size: 12px; font-weight: 700; display: flex; align-items: center">Mitali</span>
+    <span style="position: absolute; left: 12px; top: 258px; height: 28px; padding: 0 10px; border-radius: 14px; background: #FFFFFF; border: 2px solid #14213D; font-size: 12px; font-weight: 700; display: flex; align-items: center">H + S</span>
+
+    <button type="button" aria-label="Centre on me" style="position: absolute; right: 14px; top: 14px; width: 44px; height: 44px; border-radius: 12px; border: 1px solid #9CA3AF; background: #FFFFFF; color: #14213D; font: 600 12px Plus Jakarta Sans,sans-serif">Me</button>
+  </div>
+
+  <section style="display: flex; flex-direction: column; gap: 10px; padding: 16px 20px; border-top: 1px solid #D1D5DB; background: #FFFFFF">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <span style="width: 32px; height: 32px; border-radius: 16px; background: #FFC93C; color: #14213D; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">2</span>
+      <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+        <div style="font-size: 16px; font-weight: 600">Breakfast · Tibrewala's</div>
+        <div style="font-size: 13px; color: #4B5563">8:45 · Hoshiarpur</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 10px">
+      <button type="button" style="flex: 1; height: 44px; border: 0; border-radius: 12px; background: #FFC93C; color: #14213D; font: 600 15px Plus Jakarta Sans,sans-serif">Directions</button>
+      <button type="button" style="flex: 1; height: 44px; border: 1px solid #9CA3AF; border-radius: 12px; background: #FFFFFF; color: #14213D; font: 600 15px Plus Jakarta Sans,sans-serif">Details</button>
+    </div>
+  </section>
+
+  <nav style="display: flex; height: 64px; flex-shrink: 0; border-top: 1px solid #D1D5DB; background: #FFFFFF">
+    <a href="#today" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Today</a>
+    <a href="#plan" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: #0369A1; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: #FFC93C"></span>Plan</a>
+    <a href="#explore" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Explore</a>
+    <a href="#chat" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Chat</a>
+    <a href="#money" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Money</a>
+  </nav>
+</div></div></figure>
+<figure id="explore"><figcaption><b>6 · Explore with AI</b><span>I ask a question and get place cards; each has Add to plan, Suggest and Map.</span></figcaption><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FFFFFF; color: #14213D; font-family: Plus Jakarta Sans,system-ui, sans-serif">
+  <header style="display: flex; align-items: flex-end; justify-content: space-between; padding: 24px 20px 12px">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em">Explore</h1>
+      <span style="font-size: 13px; color: #4B5563">Ask the AI. It searches the web and places.</span>
+    </div>
+    <button type="button" style="height: 44px; padding: 0 12px; border: 1px solid #9CA3AF; border-radius: 12px; background: #FFFFFF; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">Clear</button>
+  </header>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 6px 20px 12px; overflow: hidden">
+    <div style="align-self: flex-end; max-width: 280px; background: #14213D; color: #FFFFFF; border-radius: 16px 16px 4px 16px; padding: 11px 14px; font-size: 15px; line-height: 1.4">Cafes near Jibhi open after 8 pm on Saturday?</div>
+
+    <div style="align-self: flex-start; max-width: 320px; font-size: 15px; line-height: 1.45">Two that fit Saturday dinner, both a short walk from the main road:</div>
+
+    <article style="display: flex; flex-direction: column; gap: 10px; border: 1px solid #D1D5DB; border-radius: 16px; padding: 14px">
+      <div style="display: flex; gap: 12px">
+        <div style="width: 56px; height: 56px; border-radius: 10px; background: #F3F4F6; border: 1px solid #D1D5DB; flex-shrink: 0"></div>
+        <div style="display: flex; flex-direction: column; gap: 3px; flex: 1">
+          <div style="font-size: 16px; font-weight: 600">Reverberate Cafe</div>
+          <div style="font-size: 13px; color: #4B5563">Jibhi · rated 4.8 · [CLOSING TIME]</div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <button type="button" style="height: 44px; border: 0; border-radius: 12px; background: #FFC93C; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">Add to plan</button>
+        <button type="button" style="height: 44px; border: 1px solid #9CA3AF; border-radius: 12px; background: #FFFFFF; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">Suggest</button>
+        <button type="button" style="height: 44px; border: 1px solid #9CA3AF; border-radius: 12px; background: #FFFFFF; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">Map</button>
+      </div>
+    </article>
+
+    <article style="display: flex; flex-direction: column; gap: 10px; border: 1px solid #D1D5DB; border-radius: 16px; padding: 14px">
+      <div style="display: flex; gap: 12px">
+        <div style="width: 56px; height: 56px; border-radius: 10px; background: #F3F4F6; border: 1px solid #D1D5DB; flex-shrink: 0"></div>
+        <div style="display: flex; flex-direction: column; gap: 3px; flex: 1">
+          <div style="font-size: 16px; font-weight: 600">Cafe Bela</div>
+          <div style="font-size: 13px; color: #4B5563">Jibhi · rated 4.8 · [CLOSING TIME]</div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <button type="button" style="height: 44px; border: 0; border-radius: 12px; background: #FFC93C; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">Add to plan</button>
+        <button type="button" style="height: 44px; border: 1px solid #9CA3AF; border-radius: 12px; background: #FFFFFF; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">Suggest</button>
+        <button type="button" style="height: 44px; border: 1px solid #9CA3AF; border-radius: 12px; background: #FFFFFF; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">Map</button>
+      </div>
+    </article>
+
+    <div style="display: flex; flex-direction: column; gap: 6px; border: 1px dashed #6B7280; border-radius: 12px; padding: 10px 12px; font-size: 13px; line-height: 1.45; color: #4B5563">
+      <div><b style="color: #14213D">Add to plan</b> asks which day and time, then adds the stop.</div>
+      <div><b style="color: #14213D">Suggest</b> posts it to the group chat for a vote.</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; padding: 10px 20px 12px; border-top: 1px solid #E5E7EB">
+    <div style="display: flex; gap: 8px">
+      <button type="button" style="height: 44px; padding: 0 14px; border: 1px solid #9CA3AF; border-radius: 22px; background: #FFFFFF; color: #14213D; font: 500 13px Plus Jakarta Sans,sans-serif">Things to do Sat</button>
+      <button type="button" style="height: 44px; padding: 0 14px; border: 1px solid #9CA3AF; border-radius: 22px; background: #FFFFFF; color: #14213D; font: 500 13px Plus Jakarta Sans,sans-serif">Lunch on the way</button>
+    </div>
+    <form style="display: flex; gap: 8px">
+      <label for="explore-ex-q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Ask the AI</label>
+      <input id="explore-ex-q" type="text" placeholder="Ask about places, timings, ideas" style="flex: 1; min-width: 0; height: 48px; box-sizing: border-box; border: 1px solid #9CA3AF; border-radius: 14px; padding: 0 14px; font: 400 16px Plus Jakarta Sans,sans-serif; color: #14213D; background: #FFFFFF">
+      <button type="button" style="height: 48px; padding: 0 16px; border: 0; border-radius: 14px; background: #FFC93C; color: #14213D; font: 600 15px Plus Jakarta Sans,sans-serif">Ask</button>
+    </form>
+  </div>
+
+  <nav style="display: flex; height: 64px; flex-shrink: 0; border-top: 1px solid #D1D5DB; background: #FFFFFF">
+    <a href="#today" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Today</a>
+    <a href="#plan" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Plan</a>
+    <a href="#explore" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: #0369A1; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: #FFC93C"></span>Explore</a>
+    <a href="#chat" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Chat</a>
+    <a href="#money" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Money</a>
+  </nav>
+</div></div></figure>
+<figure id="chat"><figcaption><b>7 · Chat</b><span>We talk; ideas appear as cards we vote on, and one tap puts a winner on the plan.</span></figcaption><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FFFFFF; color: #14213D; font-family: Plus Jakarta Sans,system-ui, sans-serif">
+  <header style="display: flex; align-items: flex-end; justify-content: space-between; padding: 24px 20px 12px; border-bottom: 1px solid #E5E7EB">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em">Chat</h1>
+      <span style="font-size: 13px; color: #4B5563">Naman, Mitali, Himanshu, Sirisha</span>
+    </div>
+    <button type="button" style="height: 44px; padding: 0 12px; border: 1px solid #9CA3AF; border-radius: 12px; background: #FFFFFF; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">Ideas 2</button>
+  </header>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 14px 20px 12px; overflow: hidden">
+    <div style="align-self: center; font-size: 12px; font-weight: 600; color: #4B5563">Thu 12 Nov</div>
+
+    <div style="align-self: flex-start; max-width: 290px; display: flex; flex-direction: column; gap: 4px">
+      <span style="font-size: 12px; font-weight: 600; color: #4B5563">Mitali</span>
+      <div style="background: #F3F4F6; border-radius: 16px 16px 16px 4px; padding: 11px 14px; font-size: 15px; line-height: 1.4">Booked the 5:30 bus from Pathankot.</div>
+    </div>
+
+    <article style="display: flex; flex-direction: column; gap: 10px; border: 1.5px solid #7DD3FC; background: #F0F9FF; border-radius: 16px; padding: 14px">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #0369A1">IDEA FROM HIMANSHU</span>
+        <span style="font-size: 13px; font-weight: 600; color: #4B5563">3 of 4 in</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px">
+        <div style="font-size: 16px; font-weight: 600">Serolsar Lake hike</div>
+        <div style="font-size: 13px; color: #4B5563">Sat morning · from Jalori Pass · about 5 km each way</div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <button type="button" style="height: 44px; border: 0; border-radius: 12px; background: #FFC93C; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">I'm in</button>
+        <button type="button" style="height: 44px; border: 1px solid #9CA3AF; border-radius: 12px; background: #FFFFFF; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">Add to plan</button>
+        <button type="button" style="height: 44px; border: 1px solid #9CA3AF; border-radius: 12px; background: #FFFFFF; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">Map</button>
+      </div>
+    </article>
+
+    <div style="align-self: flex-start; max-width: 290px; display: flex; flex-direction: column; gap: 4px">
+      <span style="font-size: 12px; font-weight: 600; color: #4B5563">Sirisha</span>
+      <div style="background: #F3F4F6; border-radius: 16px 16px 16px 4px; padding: 11px 14px; font-size: 15px; line-height: 1.4">Yes to the hike. Do we need to carry lunch?</div>
+    </div>
+
+    <div style="align-self: flex-end; max-width: 290px; background: #14213D; color: #FFFFFF; border-radius: 16px 16px 4px 16px; padding: 11px 14px; font-size: 15px; line-height: 1.4">I'll check and add it to the plan.</div>
+
+    <div style="align-self: center; font-size: 13px; color: #4B5563; border: 1px dashed #6B7280; border-radius: 10px; padding: 8px 12px">Naman added "Serolsar Lake hike" to Sat 14</div>
+  </div>
+
+  <form style="display: flex; gap: 8px; padding: 10px 20px 12px; border-top: 1px solid #E5E7EB">
+    <label for="chat-ch-m" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Message</label>
+    <input id="chat-ch-m" type="text" placeholder="Message" style="flex: 1; min-width: 0; height: 48px; box-sizing: border-box; border: 1px solid #9CA3AF; border-radius: 14px; padding: 0 14px; font: 400 16px Plus Jakarta Sans,sans-serif; color: #14213D; background: #FFFFFF">
+    <button type="button" style="height: 48px; padding: 0 16px; border: 0; border-radius: 14px; background: #FFC93C; color: #14213D; font: 600 15px Plus Jakarta Sans,sans-serif">Send</button>
+  </form>
+
+  <nav style="display: flex; height: 64px; flex-shrink: 0; border-top: 1px solid #D1D5DB; background: #FFFFFF">
+    <a href="#today" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Today</a>
+    <a href="#plan" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Plan</a>
+    <a href="#explore" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Explore</a>
+    <a href="#chat" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: #0369A1; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: #FFC93C"></span>Chat</a>
+    <a href="#money" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Money</a>
+  </nav>
+</div></div></figure>
+<figure id="money"><figcaption><b>8 · Money</b><span>I see what I owe or get back; anyone adds an expense; Settle up shows the fewest payments.</span></figcaption><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FFFFFF; color: #14213D; font-family: Plus Jakarta Sans,system-ui, sans-serif">
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: 24px 20px 12px">
+    <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em">Money</h1>
+    <button type="button" style="height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: #FFC93C; color: #14213D; font: 600 14px Plus Jakarta Sans,sans-serif">+ Add expense</button>
+  </header>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 4px 20px 16px; overflow: hidden">
+    <section style="display: flex; flex-direction: column; gap: 6px; border: 1.5px solid #6EE7B7; background: #ECFDF5; border-radius: 16px; padding: 16px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #4B5563">YOU GET BACK</div>
+      <div style="font-size: 32px; font-weight: 700; letter-spacing: -0.01em; color: #047857">₹4,200</div>
+      <div style="font-size: 13px; color: #4B5563">Trip total ₹15,200 · your share ₹3,800</div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; border: 1px solid #D1D5DB; border-radius: 16px; padding: 6px 16px">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0 6px">
+        <h2 style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #4B5563">BALANCES</h2>
+        <button type="button" style="height: 36px; padding: 0 12px; border: 1px solid #9CA3AF; border-radius: 10px; background: #FFFFFF; color: #14213D; font: 600 13px Plus Jakarta Sans,sans-serif">Settle up</button>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-top: 1px solid #E5E7EB">
+        <span style="font-size: 15px; font-weight: 600">Himanshu</span>
+        <span style="font-size: 14px; font-weight: 600; color: #047857">gets back ₹2,200</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-top: 1px solid #E5E7EB">
+        <span style="font-size: 15px; font-weight: 600">Sirisha</span>
+        <span style="font-size: 14px; font-weight: 600; color: #BE123C">owes ₹2,600</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-top: 1px solid #E5E7EB">
+        <span style="font-size: 15px; font-weight: 600">Mitali</span>
+        <span style="font-size: 14px; font-weight: 600; color: #BE123C">owes ₹3,800</span>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; border: 1px solid #D1D5DB; border-radius: 16px; padding: 6px 16px">
+      <h2 style="margin: 0; padding: 12px 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #4B5563">EXPENSES</h2>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 11px 0; border-top: 1px solid #E5E7EB">
+        <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+          <div style="font-size: 15px; font-weight: 600">Cab advance</div>
+          <div style="font-size: 13px; color: #4B5563">You paid · split 4 ways</div>
+        </div>
+        <div style="font-size: 15px; font-weight: 700">₹8,000</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 11px 0; border-top: 1px solid #E5E7EB">
+        <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+          <div style="font-size: 15px; font-weight: 600">Stay advance</div>
+          <div style="font-size: 13px; color: #4B5563">Himanshu paid · split 4 ways</div>
+        </div>
+        <div style="font-size: 15px; font-weight: 700">₹6,000</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 11px 0; border-top: 1px solid #E5E7EB">
+        <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+          <div style="font-size: 15px; font-weight: 600">Breakfast</div>
+          <div style="font-size: 13px; color: #4B5563">Sirisha paid · split 4 ways</div>
+        </div>
+        <div style="font-size: 15px; font-weight: 700">₹1,200</div>
+      </div>
+    </section>
+
+    <div style="display: flex; flex-direction: column; gap: 6px; border: 1px dashed #6B7280; border-radius: 12px; padding: 10px 12px; font-size: 13px; line-height: 1.45; color: #4B5563">
+      <div><b style="color: #14213D">Add expense</b>: amount, what for, who paid, split equally or custom.</div>
+      <div><b style="color: #14213D">Settle up</b>: the fewest payments to square everyone, with UPI links.</div>
+    </div>
+  </div>
+
+  <nav style="display: flex; height: 64px; flex-shrink: 0; border-top: 1px solid #D1D5DB; background: #FFFFFF">
+    <a href="#today" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Today</a>
+    <a href="#plan" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Plan</a>
+    <a href="#explore" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Explore</a>
+    <a href="#chat" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4B5563; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: transparent"></span>Chat</a>
+    <a href="#money" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: #0369A1; text-decoration: none"><span style="width: 20px; height: 3px; border-radius: 2px; background: #FFC93C"></span>Money</a>
+  </nav>
+</div></div></figure>
+</main></body></html>
