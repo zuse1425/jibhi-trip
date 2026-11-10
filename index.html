@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f6b4a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Jibhi Trip · 13–16 Nov</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<main>
+<header>
+  <div class="hrow"><h1>🏔️ Jibhi · Jalori · Tirthan</h1><button id="mebtn" class="me" type="button">👤 <span id="mename">Join</span></button></div>
+  <p class="lead">Fri 13 – Mon 16 Nov · cab from Hoshiarpur · <span id="sync" class="sync off">Loading…</span></p>
+  <div id="nowcard" class="nowcard"><div class="nc-k">Right now</div><div class="nc-t">Loading…</div></div>
+</header>
+
+<div id="tab-plan" class="tab">
+  <nav id="daynav" class="daynav"></nav>
+  <div id="editbar" class="editbar" hidden>✏️ Edit mode · tap ✏️ on a stop to change it <button type="button" data-act="editoff">Done</button></div>
+  <section class="day" id="reach"><div class="dh"><div class="date">Fri 13 · early morning</div>
+<h2>Getting to Hoshiarpur</h2><div class="stay">Be at the bus stand by <b>8:00 am</b> · times include a 15-min buffer</div>
+<a class="routebtn" href="https://www.google.com/maps/search/?api=1&query=Hoshiarpur%20Bus%20Stand&query_place_id=ChIJQd27AgDjGjkRlCdAiM834Jk" target="_blank" rel="noopener">📍 Hoshiarpur Bus Stand</a></div>
+<div class="people">
+<div class="person"><div class="ptop"><span class="pn">Mitali</span><span class="pleave">Leave 5:30 am</span></div><div class="pleg">🚌 <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Pathankot%20Bus%20Stand" target="_blank" rel="noopener">Pathankot bus stand</a> → Hoshiarpur · ~2 hr · book on redBus/Zingbus</div><div class="pleg">🛺 If dropped at <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Prabhat%20Chowk%20Hoshiarpur" target="_blank" rel="noopener">Prabhat Chowk</a>, take an auto · 5 min</div><div class="parr">✅ At Hoshiarpur bus stand ~7:30–7:45</div></div>
+<div class="person"><div class="ptop"><span class="pn">Naman</span><span class="pleave">Leave 4:30 am</span></div><div class="pleg">🚌 <a class="inl" href="https://www.google.com/maps/search/?api=1&query=ISBT%20Mohali%20Phase%206" target="_blank" rel="noopener">Mohali ISBT Ph-6</a> or <a class="inl" href="https://www.google.com/maps/search/?api=1&query=ISBT%20Sector%2043%20Chandigarh" target="_blank" rel="noopener">ISBT-43</a> → Hoshiarpur · PRTC/Punbus ordinary · ~3 hr</div><div class="pleg">🎫 Buy at the counter (online buses start ~8 am)</div><div class="parr">✅ At Hoshiarpur bus stand ~7:30–7:45</div></div>
+<div class="person"><div class="ptop"><span class="pn">Himanshu</span><span class="pleave">Leave Thu evening</span></div><div class="pleg">🚌 <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Barnala%20Bus%20Stand" target="_blank" rel="noopener">Barnala bus stand</a> → Ludhiana · ~1.5 hr</div><div class="pleg">🛏️ Stay over at Sirisha's side</div><div class="parr">✅ At Hoshiarpur bus stand with Sirisha ↓</div></div>
+<div class="person"><div class="ptop"><span class="pn">Himanshu + Sirisha</span><span class="pleave">Leave 6:00 am cab · 5:30 am bus</span></div><div class="pleg">🚐 <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Ludhiana%20Bus%20Stand" target="_blank" rel="noopener">Ludhiana bus stand</a> → Hoshiarpur · 78 km · cab ~1.5 hr / bus ~2 hr</div><div class="parr">✅ At Hoshiarpur bus stand ~7:45</div></div>
+</div>
+<details class="mo pad"><summary>Plan B if Himanshu can't come on Thursday</summary><div>Take the 5:45 am PRTC from Barnala to Ludhiana, then a cab with Sirisha at ~7:00, straight to <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Tibrewala%27s%20Cafe%20%26%20Restaurant%20Hoshiarpur&query_place_id=ChIJQ_tMdlrjGjkRKOYmttJ6GVE" target="_blank" rel="noopener">Tibrewala's</a> (~8:45). The others order for them. Share live location from 6 am.</div></details>
+</section>
+  <div id="days"></div>
+</div>
+
+<div id="tab-ideas" class="tab" hidden>
+  <section class="day"><div class="dh"><div class="date">Suggestions</div><h2>Ideas board</h2>
+    <div class="stay">Anyone can add a place. Vote 👍, comment, then ✅ Decide to put it on the plan.</div>
+    <button type="button" class="routebtn" data-act="newsug">＋ Suggest a place</button></div>
+    <div class="filters" id="sugfilter"></div>
+    <div id="suglist" class="suglist"></div>
+  </section>
+</div>
+
+<div id="tab-chat" class="tab" hidden>
+  <section class="day chatbox"><div class="dh"><div class="date">Group</div><h2>Chat</h2></div>
+    <div id="chatlist" class="chatlist"></div>
+    <form id="chatform" class="chatform"><input id="chatinput" placeholder="Message…" autocomplete="off" maxlength="1000"><button type="submit">Send</button></form>
+  </section>
+</div>
+
+<div id="tab-info" class="tab" hidden>
+  <section class="day"><div class="dh"><div class="date">Crew</div><h2>Who's in</h2><div id="memberlist" class="pchips"></div></div>
+    <div class="pad16">
+      <button type="button" class="wide" data-act="editon">✏️ Edit the plan</button>
+      <button type="button" class="wide sec" data-act="rename">👤 Change my name</button>
+      <button type="button" class="wide sec" data-act="refresh">↻ Refresh</button>
+      <small>Tip: in Chrome, ⋮ → <b>Add to Home screen</b> to open this like an app. It works offline with the last synced copy.</small>
+    </div>
+  </section>
+  <section class="day" id="know"><div class="dh"><div class="date">Reference</div><h2>Good to know</h2></div>
+<details class="card" open><summary>💸 Tolls &amp; taxes</summary><div>
+<div class="kv"><span>Himachal entry tax</span><b>₹100</b></div><div class="kv"><span>Manali green tax (Option B)</span><b>₹200</b></div>
+<div class="kv"><span>NHAI tolls on our route</span><b>None</b></div><small>Paid once at the border, valid 24 hr. No exit fee.</small></div></details>
+<details class="card"><summary>☕ Food guide · tap to open in Maps</summary><div><div class="grp">Jibhi</div><a class="row" href="https://www.google.com/maps/search/?api=1&query=Reverberate%20Cafe%20%26%20Cottages%20Jibhi&query_place_id=ChIJPYw66Q2vBTkRNDPRj7pRB34" target="_blank" rel="noopener"><span><b>Reverberate</b><small>Trout, lasagne</small></span><span class="r">★4.8<small>801</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Cafe%20Bela%20Jibhi&query_place_id=ChIJ50vJ0havBTkRkRYr149iKWk" target="_blank" rel="noopener"><span><b>Cafe Bela</b><small>Riverside, farmhouse pizza</small></span><span class="r">★4.8<small>519</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Pineroots%20Cafe%20Jibhi&query_place_id=ChIJ67JMRZevBTkR3lTpKaxP5Jk" target="_blank" rel="noopener"><span><b>Pineroots</b><small>Breakfast</small></span><span class="r">★4.8<small>498</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Jibhi%20forest%20bean%20coffeehouse%20%26%20bistro&query_place_id=ChIJmc93kYevBTkRbPjvRdf-KJc" target="_blank" rel="noopener"><span><b>Forest Bean</b><small>Coffee, valley view</small></span><span class="r">★4.8<small>341</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=The%20Enzo%27s%20coffeehouse%20%26%20bistro%20cafe%20jibhi&query_place_id=ChIJAbOIwPSvBTkRQyqxTq4fio8" target="_blank" rel="noopener"><span><b>The Enzo's</b><small>Evening vibe</small></span><span class="r">★4.7<small>749</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Openbook%20Coffee%20%26%20Library%20Jibhi&query_place_id=ChIJzfHeCACvBTkRY00XEM5ffJk" target="_blank" rel="noopener"><span><b>Openbook</b><small>Pancakes, espresso</small></span><span class="r">★4.7<small>191</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Jungle%20Valley%20Jibhi&query_place_id=ChIJd5ZgukuuBTkR7_qUyxubueY" target="_blank" rel="noopener"><span><b>Jungle Valley</b><small>Trout, siddu</small></span><span class="r">★4.6<small>969</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=The%20Pink%20Panther%20Jibhi&query_place_id=ChIJqeCs2E2vBTkRGMfz0PgNRlw" target="_blank" rel="noopener"><span><b>Pink Panther</b><small>Cakes, waffles</small></span><span class="r">★4.5<small>1.3k</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=cafe%20bleeblu%20Jibhi&query_place_id=ChIJQcbzjv-vBTkRnAu0hUsYEys" target="_blank" rel="noopener"><span><b>Café Bleeblu</b><small>Aesthetic, slow service</small></span><span class="r">★4.5<small>659</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=All-Mi-Tea%20Bistro%20%26%20Cafe%20Jibhi&query_place_id=ChIJt-Qkll-vBTkR-LNM-s66pwk" target="_blank" rel="noopener"><span><b>All-Mi-Tea</b><small>Hot chocolate</small></span><span class="r">★4.9<small>73</small></span></a><div class="grp">Shoja</div><a class="row" href="https://www.google.com/maps/search/?api=1&query=Jaani%27s%20Art%20Cafe%20%26%20Stay%20Shoja&query_place_id=ChIJW-bFfy6vBTkRJZ1hpdP6-68" target="_blank" rel="noopener"><span><b>Jaani's Art Café</b><small>Best food, events</small></span><span class="r">★4.9<small>390</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=The%20Rustic%20Shoja&query_place_id=ChIJX5jbppWvBTkRkIli9GDywFk" target="_blank" rel="noopener"><span><b>The Rustic Shoja</b><small>View + hot drink</small></span><span class="r">★4.5<small>282</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Firgun%20Cafe%20Shoja&query_place_id=ChIJnauZagCvBTkRiEF3qVMYQhc" target="_blank" rel="noopener"><span><b>Firgun Café</b><small>Sunset vibe</small></span><span class="r">★4.0<small>148</small></span></a><div class="grp">Tirthan</div><a class="row" href="https://www.google.com/maps/search/?api=1&query=Humming%20Woods%20Cafe%20Tirthan&query_place_id=ChIJiUp7eAezBTkRDLf_yqenRLw" target="_blank" rel="noopener"><span><b>Humming Woods</b><small>Riverside, trout</small></span><span class="r">★4.8<small>283</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Kitab-fe%20Cafe%20Tirthan&query_place_id=ChIJnWWEltazBTkRIx-RatYC7hs" target="_blank" rel="noopener"><span><b>Kitab-fe</b><small>Momos</small></span><span class="r">★4.8<small>70</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Great%20Himalayan%20Cafe%20Tirthan&query_place_id=ChIJ9dCyOQCzBTkRGg1n4PIXMUQ" target="_blank" rel="noopener"><span><b>Great Himalayan Café</b><small>Wood-fired pizza</small></span><span class="r">★5.0<small>27</small></span></a><div class="grp">Manali</div><a class="row" href="https://www.google.com/maps/search/?api=1&query=Old%20bridge%20cafe%20Old%20Manali&query_place_id=ChIJiSn5QlyHBDkRdXExGv3IEeo" target="_blank" rel="noopener"><span><b>Old Bridge Café</b><small>Riverside trout</small></span><span class="r">★4.9<small>693</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Cafe%201986%20Manali&query_place_id=ChIJaznY7syJBDkRIuRAhuFlpxE" target="_blank" rel="noopener"><span><b>Café 1986</b><small>Live music</small></span><span class="r">★4.6<small>12.8k</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=The%20Lazy%20Dog%20Lounge%20Old%20Manali&query_place_id=ChIJjw67zAaIBDkR02hDRQfB0Xs" target="_blank" rel="noopener"><span><b>The Lazy Dog</b><small>Riverside dinner</small></span><span class="r">★4.4<small>9.1k</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Madras%20Cafe%20Manali&query_place_id=ChIJrbYaCJeHBDkRghWoKm0Qj2Q" target="_blank" rel="noopener"><span><b>Madras Café</b><small>Opens 7 am</small></span><span class="r">★4.7<small>2.5k</small></span></a><a class="row" href="https://www.google.com/maps/search/?api=1&query=Dana%20Coffee%20House%20and%20German%20Bakery%20Manali&query_place_id=ChIJ4Wda_m6HBDkR8tCo2UEpmT0" target="_blank" rel="noopener"><span><b>Dana Bakery</b><small>Breakfast</small></span><span class="r">★4.7<small>784</small></span></a><small>★ Google rating · number of reviews</small></div></details>
+<details class="card"><summary>🪂 Fun extras</summary><div><ul>
+<li><b>Paragliding</b> Tandi → Jibhi, ~₹1,100+ · <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Jibhi%20Adventure&query_place_id=ChIJl8m1PLWvBTkR6C8BIi3gfJI" target="_blank" rel="noopener">Jibhi Adventure</a></li>
+<li><b>Waterfall rappelling</b> · <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Jibhi%20Adventure&query_place_id=ChIJl8m1PLWvBTkR6C8BIi3gfJI" target="_blank" rel="noopener">Jibhi Adventure</a></li>
+<li><b>Zipline</b> near Jalori's 360° point</li>
+<li><b>Live music / karaoke</b> · <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Jaani%27s%20Art%20Cafe%20%26%20Stay%20Shoja&query_place_id=ChIJW-bFfy6vBTkRJZ1hpdP6-68" target="_blank" rel="noopener">Jaani's, Shoja</a></li>
+<li><b>Trout angling</b> · permit at Sai Ropa</li></ul></div></details>
+<details class="card"><summary>🎬 Bollywood &amp; stories</summary><div><ul>
+<li><b>Hadimba Temple</b>: Yeh Jawaani Hai Deewani + <i>Roja</i> · <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Hadimba%20Devi%20Temple%20Manali&query_place_id=ChIJPeVowAaIBDkRnIfuPkskqi0" target="_blank" rel="noopener">Map</a></li>
+<li><b>Span Resort</b>: the YJHD gang's Manali resort · <a class="inl" href="https://www.google.com/maps/search/?api=1&query=Span%20Resort%20and%20Spa%20Manali" target="_blank" rel="noopener">Map</a></li>
+<li><b>Serolsar</b>: sacred lake of Budhi Nagin</li>
+<li><b>Chehni Kothi</b>: survived the 1905 earthquake</li>
+<li><b>GHNP</b>: UNESCO World Heritage Site</li></ul></div></details>
+<details class="card"><summary>🎒 Pack &amp; prep</summary><div><ul>
+<li>Nights ~0°C, colder at Shoja: thermals, down jacket, gloves, beanie</li>
+<li>Good shoes for the Serolsar &amp; waterfall trails</li>
+<li>Cash: ATMs &amp; network are patchy around Jibhi/Shoja</li>
+<li>Download offline Google Maps for Kullu district</li>
+<li>Avoid driving Shoja–Jibhi &amp; the Mandi stretch after dark</li></ul></div></details>
+</section>
+</div>
+<footer>See you at Hoshiarpur bus stand, 8:00 am Friday 🚐</footer>
+</main>
+
+<div id="toast" class="toast" hidden></div>
+<nav class="tabbar" id="tabbar">
+  <button type="button" data-tab="plan" class="on"><span>🗓️</span>Plan</button>
+  <button type="button" data-tab="ideas"><span>💡</span>Ideas<b id="badge-ideas" class="badge" hidden></b></button>
+  <button type="button" data-tab="chat"><span>💬</span>Chat<b id="badge-chat" class="badge" hidden></b></button>
+  <button type="button" data-tab="info"><span>ℹ️</span>Info</button>
+</nav>
+<dialog id="modal"><form method="dialog" id="mform"></form></dialog>
+
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body></html>

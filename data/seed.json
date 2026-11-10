@@ -1,0 +1,954 @@
+{
+ "trip": "jibhi-nov-2026",
+ "days": [
+  {
+   "id": "d1",
+   "kicker": "Fri 13 Nov · Day 1",
+   "title": "Hoshiarpur → Jibhi",
+   "stay": "Night in Jibhi",
+   "route": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Hoshiarpur%20Bus%20Stand&destination=Jibhi%2C%20Himachal%20Pradesh&waypoints=Una%2C%20Himachal%20Pradesh%7CHamirpur%2C%20Himachal%20Pradesh%7CMandi%2C%20Himachal%20Pradesh%7CAut%2C%20Himachal%20Pradesh"
+  },
+  {
+   "id": "d2",
+   "kicker": "Sat 14 Nov · Day 2",
+   "title": "Jalori Pass · Serolsar · Shoja",
+   "stay": "Night in Jibhi · check the Jalori road is open before leaving",
+   "route": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Jibhi%2C%20Himachal%20Pradesh&destination=Jalori%20Pass&waypoints=Shoja%2C%20Himachal%20Pradesh"
+  },
+  {
+   "id": "dA",
+   "kicker": "Sun 15 – Mon 16 · Option A",
+   "title": "Tirthan Valley",
+   "stay": "Night in Tirthan riverside (e.g. Humming Woods) or Jibhi",
+   "route": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Jibhi%2C%20Himachal%20Pradesh&destination=Gushaini%2C%20Himachal%20Pradesh&waypoints=Chehni%20Kothi%7CSai%20Ropa%2C%20Himachal%20Pradesh",
+   "opt": "A"
+  },
+  {
+   "id": "dB",
+   "kicker": "Sun 15 – Mon 16 · Option B",
+   "title": "Manali",
+   "stay": "Night at Byakche Kyum, Jagatsukh · short walk up from parking",
+   "route": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Jibhi%2C%20Himachal%20Pradesh&destination=BYAKCHE%20KYUM%20Jagatsukh%20Manali&waypoints=Aut%2C%20Himachal%20Pradesh%7CKullu%2C%20Himachal%20Pradesh",
+   "opt": "B"
+  }
+ ],
+ "stops": [
+  {
+   "day": "d1",
+   "date": "2026-11-13",
+   "t": "07:45",
+   "kind": "meet",
+   "name": "Hoshiarpur Bus Stand",
+   "area": "Jodha Mall Rd, Civil Lines",
+   "q": "Hoshiarpur Bus Stand",
+   "pid": "ChIJQd27AgDjGjkRlCdAiM834Jk",
+   "note": "Everyone meets here",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "d1",
+   "date": "2026-11-13",
+   "t": "08:30",
+   "kind": "meal",
+   "name": "Tibrewala's Café & Restaurant",
+   "area": "Banjar Bagh Chowk, Hoshiarpur",
+   "q": "Tibrewala's Cafe & Restaurant Hoshiarpur",
+   "pid": "ChIJQ_tMdlrjGjkRKOYmttJ6GVE",
+   "note": "Veg · opens 8:30 · ★4.8 (4.4k) · order quick: paratha, poori, chai",
+   "tag": "Breakfast",
+   "label": null,
+   "alts": [
+    {
+     "label": "MCM Café",
+     "q": "MCM Cafe and Restro Hoshiarpur",
+     "pid": "ChIJIZhvjdjiGjkRuSFq2yrvC1M"
+    },
+    {
+     "label": "Rajput Naan",
+     "q": "Rajput Naan Bhandar Hoshiarpur",
+     "pid": "ChIJ0TiEGUfjGjkRBAX_Sx9AJJU"
+    }
+   ],
+   "leg": {
+    "mode": "car",
+    "text": "Cab pickup 8:15 · 10 min · ~3 km"
+   },
+   "idea": null
+  },
+  {
+   "day": "d1",
+   "date": "2026-11-13",
+   "t": "09:10",
+   "kind": "drive",
+   "name": "On the road to Jibhi",
+   "area": "~280 km · 7–8 hr · via Una, Hamirpur, Mandi, Aut",
+   "q": null,
+   "pid": null,
+   "note": "₹100 Himachal entry tax at the border barrier",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "d1",
+   "date": "2026-11-13",
+   "t": "16:30",
+   "kind": "stay",
+   "name": "Reach Jibhi · check in",
+   "area": "Banjar valley, Kullu",
+   "q": "Jibhi Main Market",
+   "pid": null,
+   "note": "Walk the village & market before sunset (~5:20)",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "Pandoh → Aut tunnel → Banjar → Jibhi",
+    "url": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Hoshiarpur%20Bus%20Stand&destination=Jibhi%2C%20Himachal%20Pradesh&waypoints=Una%2C%20Himachal%20Pradesh%7CHamirpur%2C%20Himachal%20Pradesh%7CMandi%2C%20Himachal%20Pradesh%7CAut%2C%20Himachal%20Pradesh"
+   },
+   "idea": {
+    "title": "Along the way · decide in the cab",
+    "text": "Around 11:30 a chai/stretch stop between Una and Hamirpur. Around 1:30 lunch in Mandi town. Search when ~20 min out and pick whatever looks clean.",
+    "links": [
+     {
+      "label": "Dhabas on the highway",
+      "url": "https://www.google.com/maps/search/?api=1&query=dhaba%20Una%20Hamirpur%20highway"
+     },
+     {
+      "label": "Restaurants in Mandi",
+      "url": "https://www.google.com/maps/search/?api=1&query=restaurants%20in%20Mandi%20Himachal%20Pradesh"
+     }
+    ]
+   }
+  },
+  {
+   "day": "d1",
+   "date": "2026-11-13",
+   "t": "17:30",
+   "kind": "meal",
+   "name": "The Pink Panther",
+   "area": "Main road, Jibhi",
+   "q": "The Pink Panther Jibhi",
+   "pid": "ChIJqeCs2E2vBTkRGMfz0PgNRlw",
+   "note": "Cakes, waffles, hot chocolate",
+   "tag": "Snacks",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "walk",
+    "text": "5–10 min walk"
+   },
+   "idea": null
+  },
+  {
+   "day": "d1",
+   "date": "2026-11-13",
+   "t": "20:00",
+   "kind": "meal",
+   "name": "The Enzo's Coffeehouse",
+   "area": "Main Market, Jibhi",
+   "q": "The Enzo's coffeehouse & bistro cafe jibhi",
+   "pid": "ChIJAbOIwPSvBTkRQyqxTq4fio8",
+   "note": "Terrace dinner · open till 11",
+   "tag": "Dinner",
+   "label": null,
+   "alts": [
+    {
+     "label": "Reverberate",
+     "q": "Reverberate Cafe & Cottages Jibhi",
+     "pid": "ChIJPYw66Q2vBTkRNDPRj7pRB34"
+    }
+   ],
+   "leg": {
+    "mode": "walk",
+    "text": "5 min walk"
+   },
+   "idea": null
+  },
+  {
+   "day": "d1",
+   "date": "2026-11-13",
+   "t": "21:30",
+   "kind": "stay",
+   "name": "Bonfire + stargazing",
+   "area": "At the stay",
+   "q": null,
+   "pid": null,
+   "note": "Clear, cold, dry week",
+   "tag": "",
+   "label": "Night",
+   "alts": [],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "d2",
+   "date": "2026-11-14",
+   "t": "07:45",
+   "kind": "drive",
+   "name": "Leave Jibhi",
+   "area": "Uphill towards Shoja",
+   "q": null,
+   "pid": null,
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "d2",
+   "date": "2026-11-14",
+   "t": "08:00",
+   "kind": "meal",
+   "name": "Jaani's Art Café",
+   "area": "Shoja",
+   "q": "Jaani's Art Cafe & Stay Shoja",
+   "pid": "ChIJW-bFfy6vBTkRJZ1hpdP6-68",
+   "note": "★4.9 · aloo paratha · pack snacks & water for the trek",
+   "tag": "Breakfast",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "~20 min · 6 km uphill",
+    "url": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Jibhi%2C%20Himachal%20Pradesh&destination=Jalori%20Pass&waypoints=Shoja%2C%20Himachal%20Pradesh"
+   },
+   "idea": {
+    "title": "Maybe",
+    "text": "Quick photo stop at Ghiyagi if the light is good.",
+    "links": [
+     {
+      "label": "Ghiyagi",
+      "url": "https://www.google.com/maps/search/?api=1&query=Ghiyagi%2C%20Himachal%20Pradesh"
+     }
+    ]
+   }
+  },
+  {
+   "day": "d2",
+   "date": "2026-11-14",
+   "t": "09:15",
+   "kind": "do",
+   "name": "Jalori Pass",
+   "area": "3,120 m · Mahakali temple",
+   "q": "Jalori Pass",
+   "pid": null,
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "~20 min · steep, rough road · low gear"
+   },
+   "idea": null
+  },
+  {
+   "day": "d2",
+   "date": "2026-11-14",
+   "t": "09:30",
+   "kind": "hike",
+   "name": "Panchtara 360° viewpoint",
+   "area": "Above Jalori Pass",
+   "q": "360 Degree View Point Jalori Pass",
+   "pid": null,
+   "note": "Big Himalayan views · zipline near the top if it's running",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "hike",
+    "text": "20–30 min steep climb"
+   },
+   "idea": null
+  },
+  {
+   "day": "d2",
+   "date": "2026-11-14",
+   "t": "10:45",
+   "kind": "hike",
+   "name": "Serolsar Lake",
+   "area": "Budhi Nagin temple · 5 km from Jalori",
+   "q": "Serolsar Lake",
+   "pid": null,
+   "note": "The trip highlight · sacred lake, so don't litter",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "hike",
+    "text": "~1.5–2 hr · 5 km gentle forest trail"
+   },
+   "idea": null
+  },
+  {
+   "day": "d2",
+   "date": "2026-11-14",
+   "t": "13:30",
+   "kind": "meal",
+   "name": "Jalori Pass dhabas",
+   "area": "At the pass",
+   "q": "Jalori Pass",
+   "pid": null,
+   "note": "Maggi, rajma-chawal, chai",
+   "tag": "Lunch",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "hike",
+    "text": "~1.5 hr back to Jalori"
+   },
+   "idea": null
+  },
+  {
+   "day": "d2",
+   "date": "2026-11-14",
+   "t": "14:30",
+   "kind": "hike",
+   "name": "Shoja Waterfall trek",
+   "area": "Trailhead on NH-305, Sajwar",
+   "q": "Shoja Waterfall Track Starting Point",
+   "pid": "ChIJ52LBIACvBTkR3Ft2Mf8_lk8",
+   "note": "30–60 min each way · local guide ~₹500 · at the fork, take the lower right path",
+   "tag": "",
+   "label": null,
+   "alts": [
+    {
+     "label": "Raghupur Fort instead",
+     "q": "Raghupur Fort Jalori"
+    }
+   ],
+   "leg": {
+    "mode": "car",
+    "text": "~15 min down towards Shoja"
+   },
+   "idea": null
+  },
+  {
+   "day": "d2",
+   "date": "2026-11-14",
+   "t": "16:30",
+   "kind": "meal",
+   "name": "Firgun Café",
+   "area": "Edge of Shoja village",
+   "q": "Firgun Cafe Shoja",
+   "pid": "ChIJnauZagCvBTkRiEF3qVMYQhc",
+   "note": "Sunset ~5:20 · grab an edge seat",
+   "tag": "Snacks",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "~10 min"
+   },
+   "idea": null
+  },
+  {
+   "day": "d2",
+   "date": "2026-11-14",
+   "t": "20:00",
+   "kind": "meal",
+   "name": "Reverberate Café",
+   "area": "Gadagushaini, Jibhi · riverside",
+   "q": "Reverberate Cafe & Cottages Jibhi",
+   "pid": "ChIJPYw66Q2vBTkRNDPRj7pRB34",
+   "note": "Trout, lasagne · open till 11",
+   "tag": "Dinner",
+   "label": null,
+   "alts": [
+    {
+     "label": "Jungle Valley",
+     "q": "Jungle Valley Jibhi",
+     "pid": "ChIJd5ZgukuuBTkR7_qUyxubueY"
+    }
+   ],
+   "leg": {
+    "mode": "car",
+    "text": "~20 min down · leave before it gets icy"
+   },
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-15",
+   "t": "08:00",
+   "kind": "do",
+   "name": "Mini Thailand (Kulhi Katandi)",
+   "area": "1 km from Jibhi market",
+   "q": "Kulhi Katandi Mini Thailand Jibhi",
+   "pid": "ChIJMzkrUXevBTkRP1RTvfNW6b4",
+   "note": "₹25 · steps down to the stream · best in morning light",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-15",
+   "t": "08:40",
+   "kind": "do",
+   "name": "Jibhi Waterfall",
+   "area": "Jibhi",
+   "q": "Jibhi Waterfall",
+   "pid": null,
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "~5 min + 10 min walk"
+   },
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-15",
+   "t": "09:15",
+   "kind": "meal",
+   "name": "Pineroots Café",
+   "area": "Sar village, Jibhi",
+   "q": "Pineroots Cafe Jibhi",
+   "pid": "ChIJ67JMRZevBTkR3lTpKaxP5Jk",
+   "note": "Sandwiches, coffee",
+   "tag": "Breakfast",
+   "label": null,
+   "alts": [
+    {
+     "label": "Openbook",
+     "q": "Openbook Coffee & Library Jibhi",
+     "pid": "ChIJzfHeCACvBTkRY00XEM5ffJk"
+    }
+   ],
+   "leg": {
+    "mode": "car",
+    "text": "~5 min"
+   },
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-15",
+   "t": "10:15",
+   "kind": "hike",
+   "name": "Shringa Rishi Temple → Chehni Kothi",
+   "area": "Bagi village, near Banjar",
+   "q": "Chehni Kothi",
+   "pid": null,
+   "note": "~1 hr hike up · 17th-century Kath-Kuni tower",
+   "tag": "",
+   "label": null,
+   "alts": [
+    {
+     "label": "Shringa Rishi Temple",
+     "q": "Shringa Rishi Temple Bagi Banjar"
+    }
+   ],
+   "leg": {
+    "mode": "car",
+    "text": "~25 min · 10 km towards Banjar",
+    "url": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Jibhi%2C%20Himachal%20Pradesh&destination=Gushaini%2C%20Himachal%20Pradesh&waypoints=Chehni%20Kothi%7CSai%20Ropa%2C%20Himachal%20Pradesh"
+   },
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-15",
+   "t": "13:00",
+   "kind": "do",
+   "name": "Sai Ropa",
+   "area": "GHNP gateway",
+   "q": "Sai Ropa GHNP Interpretation Centre",
+   "pid": null,
+   "note": "Interpretation centre · trout angling permit (~₹100–200/rod)",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "Walk down + ~20 min drive"
+   },
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-15",
+   "t": "13:45",
+   "kind": "meal",
+   "name": "Humming Woods Café",
+   "area": "Badiropa, Sarchi Rd · riverside",
+   "q": "Humming Woods Cafe Tirthan",
+   "pid": "ChIJiUp7eAezBTkRDLf_yqenRLw",
+   "note": "Trout, pahadi chicken, dal-rice",
+   "tag": "Lunch",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "~10 min"
+   },
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-15",
+   "t": "14:45",
+   "kind": "hike",
+   "name": "Chhoie Waterfall",
+   "area": "Trail from Nagini village",
+   "q": "Chhoie Waterfall Tirthan",
+   "pid": null,
+   "note": "~45 min uphill each way",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "~5 min to Nagini"
+   },
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-15",
+   "t": "16:30",
+   "kind": "meal",
+   "name": "Kitab-fe Café",
+   "area": "Nagini, Sharchi Rd",
+   "q": "Kitab-fe Cafe Tirthan",
+   "pid": "ChIJnWWEltazBTkRIx-RatYC7hs",
+   "note": "Fried momos, Nutella waffle",
+   "tag": "Snacks",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "walk",
+    "text": "On the trail"
+   },
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-15",
+   "t": "20:00",
+   "kind": "meal",
+   "name": "Great Himalayan Café",
+   "area": "Sharchi, Tirthan · riverside",
+   "q": "Great Himalayan Cafe Tirthan",
+   "pid": "ChIJ9dCyOQCzBTkRGg1n4PIXMUQ",
+   "note": "Wood-fired pizza · closes 8:30",
+   "tag": "Dinner",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": {
+    "title": "Evening, if we feel like it",
+    "text": "Sit by the Tirthan river in Gushaini, or try trout fishing with the Sai Ropa permit.",
+    "links": [
+     {
+      "label": "Gushaini",
+      "url": "https://www.google.com/maps/search/?api=1&query=Gushaini%2C%20Himachal%20Pradesh"
+     }
+    ]
+   }
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-16",
+   "t": "08:30",
+   "kind": "meal",
+   "name": "Tirthan Riverside Café",
+   "area": "Gushaini",
+   "q": "Tirthan Riverside Cafe Gushaini",
+   "pid": "ChIJlb5PW2exBTkRUJEeXabNZeM",
+   "note": "Or eat at the stay",
+   "tag": "Breakfast",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-16",
+   "t": "11:00",
+   "kind": "drive",
+   "name": "Leave for Hoshiarpur",
+   "area": "~7–8 hr via Mandi, Hamirpur, Una",
+   "q": null,
+   "pid": null,
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": {
+    "title": "Morning, if there's time",
+    "text": "A walk to Bahu village, or paragliding at Jibhi (book through the stay or Jibhi Adventure).",
+    "links": [
+     {
+      "label": "Bahu",
+      "url": "https://www.google.com/maps/search/?api=1&query=Bahu%2C%20Himachal%20Pradesh&query_place_id=ChIJtSJekJKuBTkRDpgFI9n3FDA"
+     },
+     {
+      "label": "Jibhi Adventure",
+      "url": "https://www.google.com/maps/search/?api=1&query=Jibhi%20Adventure&query_place_id=ChIJl8m1PLWvBTkR6C8BIi3gfJI"
+     }
+    ]
+   }
+  },
+  {
+   "day": "dA",
+   "date": "2026-11-16",
+   "t": "18:30",
+   "kind": "stay",
+   "name": "Hoshiarpur Bus Stand",
+   "area": "Drop-off",
+   "q": "Hoshiarpur Bus Stand",
+   "pid": "ChIJQd27AgDjGjkRlCdAiM834Jk",
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "Route home",
+    "url": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Gushaini%2C%20Himachal%20Pradesh&destination=Hoshiarpur%20Bus%20Stand&waypoints=Mandi%2C%20Himachal%20Pradesh%7CHamirpur%2C%20Himachal%20Pradesh%7CUna%2C%20Himachal%20Pradesh"
+   },
+   "idea": {
+    "title": "Along the way",
+    "text": "Lunch around Mandi (~2 pm). Search when ~20 min out.",
+    "links": [
+     {
+      "label": "Restaurants in Mandi",
+      "url": "https://www.google.com/maps/search/?api=1&query=restaurants%20in%20Mandi%20Himachal%20Pradesh"
+     }
+    ]
+   }
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "08:00",
+   "kind": "do",
+   "name": "Mini Thailand (Kulhi Katandi)",
+   "area": "1 km from Jibhi market",
+   "q": "Kulhi Katandi Mini Thailand Jibhi",
+   "pid": "ChIJMzkrUXevBTkRP1RTvfNW6b4",
+   "note": "₹25 · best in morning light",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "08:30",
+   "kind": "do",
+   "name": "Jibhi Waterfall",
+   "area": "Jibhi",
+   "q": "Jibhi Waterfall",
+   "pid": null,
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "~5 min + 10 min walk"
+   },
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "09:00",
+   "kind": "meal",
+   "name": "Openbook Coffee & Library",
+   "area": "Opp. Post Office, Jibhi",
+   "q": "Openbook Coffee & Library Jibhi",
+   "pid": "ChIJzfHeCACvBTkRY00XEM5ffJk",
+   "note": "Pancakes, espresso",
+   "tag": "Breakfast",
+   "label": null,
+   "alts": [
+    {
+     "label": "Pineroots",
+     "q": "Pineroots Cafe Jibhi",
+     "pid": "ChIJ67JMRZevBTkR3lTpKaxP5Jk"
+    }
+   ],
+   "leg": {
+    "mode": "car",
+    "text": "~5 min"
+   },
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "10:00",
+   "kind": "drive",
+   "name": "Leave for Manali",
+   "area": "~110 km · 3–3.5 hr via Aut, Kullu",
+   "q": null,
+   "pid": null,
+   "note": "₹200 Manali green tax at the barrier (FASTag OK)",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "13:30",
+   "kind": "stay",
+   "name": "Byakche Kyum · check in",
+   "area": "Jagatsukh, Manali",
+   "q": "BYAKCHE KYUM Jagatsukh Manali",
+   "pid": "ChIJrSaktqljBDkRIwPxGlER9_4",
+   "note": "Lunch at the stay café (180° view)",
+   "tag": "Lunch",
+   "label": null,
+   "alts": [
+    {
+     "label": "Green Forest Dhaba",
+     "q": "Green forest Dhaba Jagatsukh",
+     "pid": "ChIJLWRelp9jBDkR7lyyXiwNhBM"
+    }
+   ],
+   "leg": {
+    "mode": "car",
+    "text": "Route to the stay",
+    "url": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Jibhi%2C%20Himachal%20Pradesh&destination=BYAKCHE%20KYUM%20Jagatsukh%20Manali&waypoints=Aut%2C%20Himachal%20Pradesh%7CKullu%2C%20Himachal%20Pradesh"
+   },
+   "idea": {
+    "title": "Along the way",
+    "text": "Look out for Span Resort on the highway (the YJHD gang's resort). Maybe a Kullu shawl stop, or rafting near Kullu if it's still running.",
+    "links": [
+     {
+      "label": "Span Resort",
+      "url": "https://www.google.com/maps/search/?api=1&query=Span%20Resort%20and%20Spa%20Manali"
+     },
+     {
+      "label": "Kullu shawl outlets",
+      "url": "https://www.google.com/maps/search/?api=1&query=Kullu%20shawl%20factory%20outlet"
+     }
+    ]
+   }
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "15:00",
+   "kind": "do",
+   "name": "Hadimba Devi Temple",
+   "area": "Siyal, Manali · closes 6 pm",
+   "q": "Hadimba Devi Temple Manali",
+   "pid": "ChIJPeVowAaIBDkRnIfuPkskqi0",
+   "note": "🎬 Yeh Jawaani Hai Deewani's Manali scenes · walk Van Vihar behind",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "~25 min · 8 km"
+   },
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "16:00",
+   "kind": "do",
+   "name": "Old Manali lanes",
+   "area": "Manu Temple Rd",
+   "q": "Old Manali",
+   "pid": null,
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "walk",
+    "text": "~10 min"
+   },
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "16:30",
+   "kind": "meal",
+   "name": "Old Bridge Café",
+   "area": "Riverside, Old Manali",
+   "q": "Old bridge cafe Old Manali",
+   "pid": "ChIJiSn5QlyHBDkRdXExGv3IEeo",
+   "note": "Lemon-butter trout · pricier",
+   "tag": "Snacks",
+   "label": null,
+   "alts": [
+    {
+     "label": "Backyard Café",
+     "q": "Backyard Cafe Old Manali",
+     "pid": "ChIJgZ3siOuHBDkR7nAGXVXk0hg"
+    }
+   ],
+   "leg": {
+    "mode": "walk",
+    "text": "~5 min"
+   },
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "18:30",
+   "kind": "do",
+   "name": "Mall Road",
+   "area": "New Manali",
+   "q": "Mall Road Manali",
+   "pid": null,
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "~10 min · 3 km"
+   },
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-15",
+   "t": "20:00",
+   "kind": "meal",
+   "name": "Café 1986",
+   "area": "Mall Road, Manali",
+   "q": "Cafe 1986 Manali",
+   "pid": "ChIJaznY7syJBDkRIuRAhuFlpxE",
+   "note": "Live music · ★4.6 (12.8k)",
+   "tag": "Dinner",
+   "label": null,
+   "alts": [
+    {
+     "label": "The Lazy Dog",
+     "q": "The Lazy Dog Lounge Old Manali",
+     "pid": "ChIJjw67zAaIBDkR02hDRQfB0Xs"
+    }
+   ],
+   "leg": {
+    "mode": "walk",
+    "text": "2 min"
+   },
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-16",
+   "t": "08:00",
+   "kind": "meal",
+   "name": "Breakfast at the stay",
+   "area": "Jagatsukh",
+   "q": "BYAKCHE KYUM Jagatsukh Manali",
+   "pid": "ChIJrSaktqljBDkRIwPxGlER9_4",
+   "note": "",
+   "tag": "Breakfast",
+   "label": null,
+   "alts": [
+    {
+     "label": "Madras Café (opens 7)",
+     "q": "Madras Cafe Manali",
+     "pid": "ChIJrbYaCJeHBDkRghWoKm0Qj2Q"
+    },
+    {
+     "label": "Dana Bakery",
+     "q": "Dana Coffee House and German Bakery Manali",
+     "pid": "ChIJ4Wda_m6HBDkR8tCo2UEpmT0"
+    }
+   ],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-16",
+   "t": "09:15",
+   "kind": "do",
+   "name": "Jagatsukh temples",
+   "area": "Next to the stay",
+   "q": "Jagatsukh Mandir",
+   "pid": "ChIJ7dsLyFZjBDkRf7T9xdG_6xY",
+   "note": "Old Shiva + Gayatri temples (Pandava legend)",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "walk",
+    "text": "5 min"
+   },
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-16",
+   "t": "10:00",
+   "kind": "drive",
+   "name": "Leave for Hoshiarpur",
+   "area": "~320 km · 8–9 hr via Mandi, Hamirpur, Una",
+   "q": null,
+   "pid": null,
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": null,
+   "idea": null
+  },
+  {
+   "day": "dB",
+   "date": "2026-11-16",
+   "t": "19:30",
+   "kind": "stay",
+   "name": "Hoshiarpur Bus Stand",
+   "area": "Drop-off",
+   "q": "Hoshiarpur Bus Stand",
+   "pid": "ChIJQd27AgDjGjkRlCdAiM834Jk",
+   "note": "",
+   "tag": "",
+   "label": null,
+   "alts": [],
+   "leg": {
+    "mode": "car",
+    "text": "Route home",
+    "url": "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Jagatsukh%2C%20Manali&destination=Hoshiarpur%20Bus%20Stand&waypoints=Mandi%2C%20Himachal%20Pradesh%7CHamirpur%2C%20Himachal%20Pradesh%7CUna%2C%20Himachal%20Pradesh"
+   },
+   "idea": {
+    "title": "Along the way",
+    "text": "Lunch around Mandi (~2 pm). Search when ~20 min out.",
+    "links": [
+     {
+      "label": "Restaurants in Mandi",
+      "url": "https://www.google.com/maps/search/?api=1&query=restaurants%20in%20Mandi%20Himachal%20Pradesh"
+     }
+    ]
+   }
+  }
+ ]
+}
