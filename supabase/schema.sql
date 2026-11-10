@@ -1,8 +1,9 @@
 -- Jibhi trip app · Supabase schema
--- Access model: each of the 4 friends signs in with phone number + PIN (no SMS). A phone maps to a hidden
--- email login <digits>@phone.example.com created by add_trip_user(); only logins in trip_allowlist become members.
--- Row Level Security only lets trip members read/write that trip's rows. No dashboard toggles needed.
--- NEVER commit phone numbers or PINs: create accounts in the SQL editor with add_trip_user(...).
+-- Access model: each friend signs in with Google. Only emails in trip_allowlist become trip members.
+-- Row Level Security only lets trip members read/write that trip's rows.
+-- Requires: Authentication → Sign In / Providers → Google ON (client id + secret from Google Cloud),
+--           Authentication → URL Configuration → redirect URL https://zuse1425.github.io/jibhi-trip/
+-- Never commit email addresses: add them in the SQL editor (see the allowlist section below).
 
 create extension if not exists pgcrypto;
 
@@ -34,17 +35,16 @@ exception when undefined_function then null; end $$;
 revoke execute on function public.is_member(text) from anon, public;
 grant execute on function public.is_member(text) to authenticated;
 
--- ---------- sign-in allowlist (phone + PIN) ----------
+-- ---------- sign-in allowlist (Google emails) ----------
 create table if not exists public.trip_allowlist (
   trip_id text not null,
-  email   text not null check (email = lower(email)),   -- hidden login, e.g. 9198xxxxxxxx@phone.example.com
+  email   text not null check (email = lower(email)),   -- Google account email, lowercase
   name    text not null,
-  contact_email text,
   primary key (trip_id, email)
 );
 alter table public.trip_allowlist enable row level security;   -- no policies: unreadable from the app
 
--- after sign-in the app calls this: joins the trip if your login is on the list; returns your name or null
+-- after sign-in the app calls this: joins the trip if your email is on the list; returns your name or null
 create or replace function public.claim_membership(p_trip text)
 returns text language plpgsql security definer set search_path = public as $$
 declare v_name text;
@@ -60,34 +60,10 @@ end $$;
 revoke execute on function public.claim_membership(text) from anon, public;
 grant execute on function public.claim_membership(text) to authenticated;
 
--- admin only (SQL editor): create a phone+PIN account, or reset its PIN, and allowlist it
---   select public.add_trip_user('jibhi-nov-2026', '+91 98xxxxxxxx', 'Name', '<6-digit PIN>', 'optional@contact.email');
-create or replace function public.add_trip_user(p_trip text, p_phone text, p_name text, p_pin text, p_contact text default null)
-returns uuid language plpgsql security definer set search_path = public, extensions, auth as $$
-declare v_id uuid; v_digits text := regexp_replace(p_phone, '\D', '', 'g'); v_email text;
-begin
-  if length(v_digits) = 10 then v_digits := '91' || v_digits; end if;
-  v_email := v_digits || '@phone.example.com';
-  select id into v_id from auth.users where email = v_email;
-  if v_id is null then
-    v_id := gen_random_uuid();
-    insert into auth.users (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
-      raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
-      confirmation_token, email_change, email_change_token_new, recovery_token)
-    values ('00000000-0000-0000-0000-000000000000', v_id, 'authenticated', 'authenticated', v_email,
-      extensions.crypt(p_pin, extensions.gen_salt('bf')), now(),
-      '{"provider":"email","providers":["email"]}', jsonb_build_object('name', p_name), now(), now(), '', '', '', '');
-    insert into auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
-    values (gen_random_uuid(), v_id, v_id::text,
-      jsonb_build_object('sub', v_id::text, 'email', v_email, 'email_verified', true), 'email', now(), now(), now());
-  else
-    update auth.users set encrypted_password = extensions.crypt(p_pin, extensions.gen_salt('bf')), updated_at = now() where id = v_id;
-  end if;
-  insert into public.trip_allowlist(trip_id, email, name, contact_email) values (p_trip, v_email, p_name, lower(p_contact))
-  on conflict (trip_id, email) do update set name = excluded.name, contact_email = coalesce(excluded.contact_email, trip_allowlist.contact_email);
-  return v_id;
-end $$;
-revoke execute on function public.add_trip_user(text, text, text, text, text) from anon, authenticated, public;
+-- add a person (SQL editor, not committed):
+--   insert into public.trip_allowlist(trip_id, email, name) values ('jibhi-nov-2026', 'someone@gmail.com', 'Name')
+--   on conflict (trip_id, email) do update set name = excluded.name;
+drop function if exists public.add_trip_user(text, text, text, text, text);
 
 create policy "members read" on public.members for select using (public.is_member(trip_id));
 create policy "members rename self" on public.members for update using (user_id = auth.uid()) with check (user_id = auth.uid());

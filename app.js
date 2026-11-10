@@ -76,15 +76,16 @@
     if (!session) { render(); if (navigator.onLine) showJoin(); return; }
     await afterSignIn(session);
   }
+  let lastEmail = "";
   async function afterSignIn(session) {
-    uid = session.user.id;
+    uid = session.user.id; lastEmail = session.user.email || "";
     const { data: name, error } = await sb.rpc("claim_membership", { p_trip: TRIP });
     if (error) {
       const cached = localStorage.getItem("jt-name");
       if (/fetch|network|Failed/i.test(error.message) && cached) { joined = true; myName = cached; render(); updateSync(); return true; } // offline: keep working from the saved copy
       toast(error.message); render(); return false;
     }
-    if (!name) { toast("This number isn't on the trip list"); await sb.auth.signOut(); uid = null; render(); return false; }
+    if (!name) { toast(`${session.user.email || "This account"} isn't on the trip list`); await sb.auth.signOut(); uid = null; render(); return false; }
     joined = true; myName = name; localStorage.setItem("jt-name", myName);
     await loadAll(); subscribe(); flush(); render(); return true;
   }
@@ -118,30 +119,31 @@
   window.addEventListener("offline", () => { online = false; updateSync(); });
   document.addEventListener("visibilitychange", () => { if (!document.hidden && sb && joined) { loadAll(); flush(); } });
 
-  // ---------------- sign in (phone + PIN) ----------------
-  // Each phone maps to a hidden login <digits>@phone.example.com; only the 4 trip numbers exist (trip_allowlist).
-  const phoneLogin = (v) => { let d = String(v).replace(/\D/g, ""); if (d.length === 11 && d[0] === "0") d = d.slice(1); if (d.length === 10) d = "91" + d; return d + "@phone.example.com"; };
+  // ---------------- sign in (Google) ----------------
+  // Anyone can finish Google sign-in, but only emails on trip_allowlist become members (claim_membership).
   function showJoin() {
     if (!sb) { toast("Offline · sign in when you're back online"); return; }
     if (joined) return showAccount();
-    modal(`<h3>Sign in</h3><p class="muted">Use your phone number and the 6-digit PIN Naman sent you.</p>
-      <label>Phone number<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98xxxxxxxx" required></label>
-      <label>PIN<input name="pin" type="password" inputmode="numeric" autocomplete="current-password" minlength="6" maxlength="20" required></label>
-      <div class="mbtns"><button type="button" value="cancel" data-close>Just look</button><button class="primary" value="signin">Sign in</button></div>`, async (f, btn) => {
-      if (btn !== "signin") return true;
-      const { data, error } = await sb.auth.signInWithPassword({ email: phoneLogin(f.phone.value), password: f.pin.value.trim() });
-      if (error) { toast(/invalid/i.test(error.message) ? "Wrong phone number or PIN" : error.message); return false; }
-      return afterSignIn(data.session);
-    });
+    modal(`<h3>Sign in</h3><p class="muted">Use the Google account Naman added to the trip.</p>
+      <button type="button" class="gbtn" data-act="google"><svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.2C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6c4.5-4.2 6.9-10.3 6.9-17.7z"/><path fill="#FBBC05" d="M10.6 28.5c-.5-1.4-.8-2.9-.8-4.5s.3-3.1.8-4.5l-7.9-6.2C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6c-2.1 1.4-4.9 2.3-8.2 2.3-6.2 0-11.5-4.1-13.4-9.8l-7.9 6.2C6.6 42.6 14.6 48 24 48z"/></svg>Continue with Google</button>
+      <div class="mbtns"><button type="button" data-close>Just look</button></div>`, async () => true, { focus: false });
+  }
+  async function googleSignIn() {
+    try {
+      const st = await (await fetch(C.SUPABASE_URL + "/auth/v1/settings", { headers: { apikey: C.SUPABASE_KEY } })).json();
+      if (!st.external || !st.external.google) { toast("Google sign-in isn't switched on yet · ask Naman"); return; }
+    } catch (e) { toast("Offline · try again when connected"); return; }
+    const redirectTo = location.origin + location.pathname;
+    const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo, queryParams: { prompt: "select_account" } } });
+    if (error) toast(/not enabled|provider/i.test(error.message) ? "Google sign-in isn't switched on yet" : error.message);
   }
   function showAccount() {
-    modal(`<h3>👤 ${esc(myName || "")}</h3>
+    const email = (sb && sb.auth && lastEmail) || "";
+    modal(`<h3>👤 ${esc(myName || "")}</h3>${email ? `<p class="muted">${esc(email)}</p>` : ""}
       <label>Display name<input name="name" maxlength="40" value="${esc(myName || "")}"></label>
-      <label>New PIN (optional)<input name="pin" type="password" inputmode="numeric" autocomplete="new-password" minlength="6" maxlength="20" placeholder="leave blank to keep"></label>
       <div class="mbtns"><button type="button" class="danger" data-act="signout">Sign out</button><button type="button" data-close>Close</button><button class="primary" value="save">Save</button></div>`, async (f, btn) => {
       if (btn !== "save") return true;
-      const name = f.name.value.trim(), pin = f.pin.value.trim();
-      if (pin) { const { error } = await sb.auth.updateUser({ password: pin }); if (error) { toast(error.message); return false; } toast("PIN changed"); }
+      const name = f.name.value.trim();
       if (name && name !== myName) { const { error } = await sb.from("members").update({ name }).match({ trip_id: TRIP, user_id: uid }); if (error) { toast(error.message); return false; } myName = name; localStorage.setItem("jt-name", name); await loadAll(); }
       render(); return true;
     });
@@ -402,6 +404,7 @@
     if (d.act === "editoff") { editMode = false; render(); return; }
     if (d.act === "rename") { showJoin(); return; }
     if (d.act === "signout") { signOut(); return; }
+    if (d.act === "google") { googleSignIn(); return; }
     if (d.close !== undefined) { $("#modal").close(); return; }
     if (d.act === "refresh") { if (sb && joined) loadAll(); return; }
     if (t.id === "mebtn") { if (sb) showJoin(); return; }

@@ -9,7 +9,7 @@
 - [x] T004 Seed itinerary (`supabase/seed.sql`, 4 days / 42 stops)
 - [x] T005 Vendor supabase-js v2.119 UMD; `config.js` with publishable key
 - [x] T006 Spec Kit init (Claude integration), constitution
-- [x] T007 ~~Enable Anonymous sign-ins~~ — replaced by phone + PIN accounts (`trip_allowlist`, `add_trip_user`, `claim_membership`)
+- [x] T007 ~~Enable Anonymous sign-ins~~ — replaced by Google sign-in + email allowlist (`trip_allowlist`, `claim_membership`)
 - [ ] T008 Create GitHub repo `zuse1425/jibhi-trip` (public), push, enable Pages → "GitHub Actions"
 
 ## Phase 2 — US1/US2 Plan & Now (P1) ✅
