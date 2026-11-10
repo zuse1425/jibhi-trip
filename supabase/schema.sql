@@ -1,7 +1,8 @@
 -- Jibhi trip app · Supabase schema
--- Access model: everyone signs in anonymously (no email), then joins the trip with a shared passcode.
--- Row Level Security only lets trip members read/write that trip's rows.
--- Requires: Authentication → Sign In / Providers → "Allow anonymous sign-ins" = ON.
+-- Access model: each of the 4 friends signs in with phone number + PIN (no SMS). A phone maps to a hidden
+-- email login <digits>@phone.example.com created by add_trip_user(); only logins in trip_allowlist become members.
+-- Row Level Security only lets trip members read/write that trip's rows. No dashboard toggles needed.
+-- NEVER commit phone numbers or PINs: create accounts in the SQL editor with add_trip_user(...).
 
 create extension if not exists pgcrypto;
 
@@ -26,22 +27,67 @@ returns boolean language sql stable security definer set search_path = public as
   select exists (select 1 from public.members m where m.trip_id = p_trip and m.user_id = auth.uid());
 $$;
 
-create or replace function public.join_trip(p_trip text, p_code text, p_name text)
-returns boolean language plpgsql security definer set search_path = public as $$
+-- passcode join (replaced by the allowlist below): keep it switched off
+do $$ begin
+  revoke execute on function public.join_trip(text, text, text) from anon, authenticated, public;
+exception when undefined_function then null; end $$;
+revoke execute on function public.is_member(text) from anon, public;
+grant execute on function public.is_member(text) to authenticated;
+
+-- ---------- sign-in allowlist (phone + PIN) ----------
+create table if not exists public.trip_allowlist (
+  trip_id text not null,
+  email   text not null check (email = lower(email)),   -- hidden login, e.g. 9198xxxxxxxx@phone.example.com
+  name    text not null,
+  contact_email text,
+  primary key (trip_id, email)
+);
+alter table public.trip_allowlist enable row level security;   -- no policies: unreadable from the app
+
+-- after sign-in the app calls this: joins the trip if your login is on the list; returns your name or null
+create or replace function public.claim_membership(p_trip text)
+returns text language plpgsql security definer set search_path = public as $$
+declare v_name text;
 begin
   if auth.uid() is null then raise exception 'not signed in'; end if;
-  if not exists (select 1 from public.trip_secrets s where s.trip_id = p_trip and s.passcode = p_code) then
-    return false;
-  end if;
-  insert into public.members(trip_id, user_id, name) values (p_trip, auth.uid(), left(trim(p_name), 40))
-  on conflict (trip_id, user_id) do update set name = excluded.name;
-  return true;
+  select a.name into v_name from public.trip_allowlist a
+   where a.trip_id = p_trip and a.email = lower(auth.jwt() ->> 'email');
+  if v_name is null then return null; end if;
+  insert into public.members(trip_id, user_id, name) values (p_trip, auth.uid(), v_name)
+  on conflict (trip_id, user_id) do nothing;
+  return (select name from public.members where trip_id = p_trip and user_id = auth.uid());
 end $$;
--- anonymous sign-ins use the `authenticated` role; keep signed-out (`anon`) callers out
-revoke execute on function public.join_trip(text, text, text) from anon, public;
-revoke execute on function public.is_member(text) from anon, public;
-grant execute on function public.join_trip(text, text, text) to authenticated;
-grant execute on function public.is_member(text) to authenticated;
+revoke execute on function public.claim_membership(text) from anon, public;
+grant execute on function public.claim_membership(text) to authenticated;
+
+-- admin only (SQL editor): create a phone+PIN account, or reset its PIN, and allowlist it
+--   select public.add_trip_user('jibhi-nov-2026', '+91 98xxxxxxxx', 'Name', '<6-digit PIN>', 'optional@contact.email');
+create or replace function public.add_trip_user(p_trip text, p_phone text, p_name text, p_pin text, p_contact text default null)
+returns uuid language plpgsql security definer set search_path = public, extensions, auth as $$
+declare v_id uuid; v_digits text := regexp_replace(p_phone, '\D', '', 'g'); v_email text;
+begin
+  if length(v_digits) = 10 then v_digits := '91' || v_digits; end if;
+  v_email := v_digits || '@phone.example.com';
+  select id into v_id from auth.users where email = v_email;
+  if v_id is null then
+    v_id := gen_random_uuid();
+    insert into auth.users (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
+      raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+      confirmation_token, email_change, email_change_token_new, recovery_token)
+    values ('00000000-0000-0000-0000-000000000000', v_id, 'authenticated', 'authenticated', v_email,
+      extensions.crypt(p_pin, extensions.gen_salt('bf')), now(),
+      '{"provider":"email","providers":["email"]}', jsonb_build_object('name', p_name), now(), now(), '', '', '', '');
+    insert into auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
+    values (gen_random_uuid(), v_id, v_id::text,
+      jsonb_build_object('sub', v_id::text, 'email', v_email, 'email_verified', true), 'email', now(), now(), now());
+  else
+    update auth.users set encrypted_password = extensions.crypt(p_pin, extensions.gen_salt('bf')), updated_at = now() where id = v_id;
+  end if;
+  insert into public.trip_allowlist(trip_id, email, name, contact_email) values (p_trip, v_email, p_name, lower(p_contact))
+  on conflict (trip_id, email) do update set name = excluded.name, contact_email = coalesce(excluded.contact_email, trip_allowlist.contact_email);
+  return v_id;
+end $$;
+revoke execute on function public.add_trip_user(text, text, text, text, text) from anon, authenticated, public;
 
 create policy "members read" on public.members for select using (public.is_member(trip_id));
 create policy "members rename self" on public.members for update using (user_id = auth.uid()) with check (user_id = auth.uid());
