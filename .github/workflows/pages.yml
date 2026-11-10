@@ -22,7 +22,7 @@ jobs:
       - name: Build site folder (app files only)
         run: |
           mkdir -p _site
-          cp -r index.html app.css app.js config.js sw.js manifest.webmanifest vendor icons data _site/
+          cp -r index.html app.css app.js config.js sw.js manifest.webmanifest vendor icons _site/
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site

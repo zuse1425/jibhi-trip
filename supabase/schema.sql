@@ -95,6 +95,15 @@ create table if not exists public.stops (
 );
 create index if not exists stops_trip on public.stops(trip_id, date, t);
 
+-- ---------- static page content (members only; not in the public HTML) ----------
+-- ids: title, lead, reach, know, footer. Content is loaded from the SQL editor, never committed.
+create table if not exists public.trip_pages (
+  trip_id text not null,
+  id      text not null,
+  html    text not null,
+  primary key (trip_id, id)
+);
+
 -- ---------- ideas / chat ----------
 create table if not exists public.suggestions (
   id          uuid primary key default gen_random_uuid(),
@@ -139,7 +148,7 @@ create index if not exists messages_trip on public.messages(trip_id, created_at)
 do $$
 declare t text;
 begin
-  foreach t in array array['days','stops','suggestions','votes','comments','messages'] loop
+  foreach t in array array['days','stops','suggestions','votes','comments','messages','trip_pages'] loop
     execute format('alter table public.%I enable row level security', t);
     execute format('drop policy if exists "member read" on public.%I', t);
     execute format('create policy "member read" on public.%I for select using (public.is_member(trip_id))', t);
