@@ -2,7 +2,8 @@
 
 **Input**: spec.md, plan.md, research.md, data-model.md, quickstart.md
 **Format**: `[ID] [P?] [Story] Description` — `[P]` = can run in parallel (different files, no dependency).
-**Tests**: Playwright e2e at 390×844 with mocked Supabase (`tests/`), plus live advisor checks.
+**Tests**: Playwright e2e at 390×844 with mocked Supabase (`tests/`), plus live advisor checks. No manual phone field test.
+**Scope**: web app (PWA on GitHub Pages) only — no native/APK wrapper.
 
 ## Phase 1 — Setup ✅
 - [x] T001 Create Supabase project `jibhi-trip` (ap-south-1, ref `zbiqeoybfzrmdfqqecqa`)
@@ -22,15 +23,14 @@
 - [x] T013 Now card (countdown → now/next per day/option) + NOW/NEXT highlight, 60 s refresh
 - [x] T014 Getting-there + Good-to-know from members-only `trip_pages`
 
-## Phase 3 — Sync & offline ✅ (needs field test)
+## Phase 3 — Sync & offline ✅
 - [x] T020 Google sign-in gate + `claim_membership` (allowlist); nothing rendered before sign-in
 - [x] T021 Load all tables; Realtime subscriptions
 - [x] T022 Optimistic writes + localStorage outbox + flush on reconnect
 - [x] T023 PWA: manifest, icons, service worker
-- [ ] T024 Field test on 2 phones: sign in, edit, idea→decide, chat, airplane-mode queue, option pick, expense, photo, location (manual — see quickstart.md)
 - [x] T025 Run Supabase security + performance advisors; fix findings (→ T050–T052)
 
-## Phase 4 — US3/US4/US5 ✅ (needs field test)
+## Phase 4 — US3/US4/US5 ✅
 - [x] T030 Ideas board: create, vote, comment, decide→stop, drop, reopen, filters, badge
 - [x] T031 Chat: send/receive, day separators, unread badge
 - [x] T032 Edit mode: add/edit/soft-delete stops
@@ -71,4 +71,3 @@
 ## Phase 10 — Polish
 - [x] T100 `sw.js` cache bump; README/CLAUDE.md notes for new tables + tests
 - [x] T101 Full e2e run at 390×844 (light + dark screenshots)
-- [ ] T044 Wrap as Android APK via PWABuilder (TWA) — deferred, only if wanted

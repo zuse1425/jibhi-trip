@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-trip-companion-app`
 **Created**: 2026-11-10 · **Updated**: 2026-11-10 (v2: Google sign-in, Phase 5 stories US7–US10)
-**Status**: v1 implemented and in field test · v2 (US7–US10) specified
+**Status**: v1 + v2 (US7–US10) implemented · verified by automated e2e (`tests/e2e.js`)
 **Input**: "One place for the four of us: the itinerary with times and Google Maps links, a live 'now/next', suggestions we can vote on and turn into plan items, and chat — synced automatically, hosted on GitHub Pages with Supabase." · v2: "Mark the Sun/Mon option we pick, split expenses, share photos, and optionally share live location."
 
 ## Clarifications
@@ -14,6 +14,7 @@
 - Q: Who can edit/delete an expense? → A: Any member (soft delete). Last write wins, same as stops.
 - Q: Where do photos live? → A: Posted into Chat (photo + optional caption) and also shown as a Photos grid. Stored in a private Supabase Storage bucket, resized on the phone to ≤ 1600 px JPEG. Uploading needs a connection (not queued offline).
 - Q: Live location? → A: Strictly opt-in per phone, only while the app is open, only the latest point is stored (no history), and stopping or signing out deletes it.
+- Q: Platform and verification? → A: Web app only (installable PWA on GitHub Pages). No Android APK / native wrapper. No manual two-phone field test; acceptance is the automated Playwright e2e at 390×844 plus Supabase advisor checks.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -125,6 +126,11 @@ On Info, I can switch on "Share my location". While my app is open, my latest po
 
 ### Key Entities
 - **Day** (id, kicker, title, stay, route, opt), **Stop**, **Suggestion**, **Vote**, **Comment**, **Message** (+ optional photo), **Member**, **TripPage**, **TripSetting**, **Expense**, **Location** — see `data-model.md`.
+
+## Out of Scope
+- Native apps or store wrappers (APK/TWA, iOS).
+- Manual multi-device field testing.
+- Push notifications.
 
 ## Success Criteria
 - **SC-001**: A change on one phone shows on the others in < 5 s when online.
