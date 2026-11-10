@@ -37,8 +37,11 @@ begin
   on conflict (trip_id, user_id) do update set name = excluded.name;
   return true;
 end $$;
-grant execute on function public.join_trip(text, text, text) to anon, authenticated;
-grant execute on function public.is_member(text) to anon, authenticated;
+-- anonymous sign-ins use the `authenticated` role; keep signed-out (`anon`) callers out
+revoke execute on function public.join_trip(text, text, text) from anon, public;
+revoke execute on function public.is_member(text) from anon, public;
+grant execute on function public.join_trip(text, text, text) to authenticated;
+grant execute on function public.is_member(text) to authenticated;
 
 create policy "members read" on public.members for select using (public.is_member(trip_id));
 create policy "members rename self" on public.members for update using (user_id = auth.uid()) with check (user_id = auth.uid());
