@@ -1,6 +1,6 @@
 # CLAUDE.md — Jibhi Trip App
 
-Group trip companion for 4 friends (Jibhi · Jalori · Tirthan, 13–16 Nov 2026). Static PWA on GitHub Pages + Supabase (phone + PIN auth, RLS, Realtime).
+Group trip companion for 4 friends (Jibhi · Jalori · Tirthan, 13–16 Nov 2026). Static PWA on GitHub Pages + Supabase (Google sign-in, RLS, Realtime).
 
 ## Read first
 - `docs/trip-context.md` — the full trip plan, people, timings, decisions (source of truth for content).
@@ -18,8 +18,8 @@ New work: `/speckit-specify` → `/speckit-clarify` (optional) → `/speckit-pla
 
 ## Supabase
 - Project `jibhi-trip`, ref `zbiqeoybfzrmdfqqecqa`, region ap-south-1, org "zuse1425's Org". URL `https://zbiqeoybfzrmdfqqecqa.supabase.co`.
-- Trip id `jibhi-nov-2026`. Sign-in = phone + 6-digit PIN (no SMS). Accounts are made with `add_trip_user(...)` in the SQL editor; only logins in `trip_allowlist` can join. **Never commit phone numbers or PINs.**
-- No auth dashboard toggles needed (anonymous sign-ins can stay OFF).
+- Trip id `jibhi-nov-2026`. Sign-in = Google. Only emails in `trip_allowlist` can join (add rows in the SQL editor). **Never commit email addresses.**
+- Auth → Providers → Google must be ON (Google Cloud OAuth client); redirect URL `https://zuse1425.github.io/jibhi-trip/` in Auth → URL Configuration.
 - After any DDL: run security + performance advisors.
 
 ## Conventions

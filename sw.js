@@ -1,5 +1,5 @@
 // Offline shell: cache-first for app files, network-first for seed data. Supabase traffic is never cached.
-const CACHE = "jibhi-trip-v2";
+const CACHE = "jibhi-trip-v3";
 const SHELL = ["./", "index.html", "app.css", "app.js", "config.js", "vendor/supabase.js", "data/seed.json", "manifest.webmanifest", "icons/icon-192.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });

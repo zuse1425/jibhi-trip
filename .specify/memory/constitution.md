@@ -21,7 +21,7 @@ The Supabase client is vendored (`vendor/supabase.js`) so the app never depends 
 
 ### V. Secure by default with a public repo
 The repo is public (GitHub Free Pages). Only the publishable key lives in code; Row Level Security restricts every table to trip members.
-Membership is granted only to the 4 phone + PIN accounts on `trip_allowlist` (via `claim_membership`); phone numbers and PINs are **never committed**.
+Membership is granted only to Google accounts whose email is on `trip_allowlist` (via `claim_membership`); email addresses are **never committed**.
 
 ### VI. Plan vs. ideas
 The itinerary holds what we've agreed. Anything undecided lives on the Ideas board (suggest → vote → comment → ✅ Decide moves it onto the plan).
@@ -30,7 +30,7 @@ The itinerary holds what we've agreed. Anything undecided lives on the Ideas boa
 ## Constraints
 - Trip dates: Fri 13 – Mon 16 Nov 2026, IST (UTC+05:30). All times stored as `HH:MM` IST strings with a `date`.
 - Supabase free tier (project `jibhi-trip`, ref `zbiqeoybfzrmdfqqecqa`, region ap-south-1). Free projects pause after 7 days idle.
-- Sign-in is phone + PIN (hidden email logins); no SMS provider or anonymous sign-ins needed.
+- Sign-in is Google OAuth (Supabase Google provider); anonymous sign-ins are not used.
 
 ## Development Workflow
 - Spec-driven: changes start in `specs/` (spec → plan → tasks) using the `/speckit-*` skills, then implementation.
