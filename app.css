@@ -102,7 +102,7 @@ main{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
 .daynav{position:sticky;top:0;z-index:9;display:flex;gap:6px;overflow-x:auto;margin:10px -12px 0;padding:10px 12px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);scrollbar-width:none}
 .daynav::-webkit-scrollbar{display:none}
 .daynav a{flex:0 0 auto;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:600}
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;gap:2px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
+.tabbar{position:fixed;left:0;right:0;bottom:0;top:auto;margin:0;overflow:visible;z-index:20;display:flex;justify-content:center;gap:2px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
 .tabbar button{position:relative;flex:1;max-width:130px;background:none;border:0;color:var(--ink2);font-size:.72rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:12px;min-height:52px}
 .tabbar button span{font-size:1.25rem;line-height:1}
 .tabbar button.on{color:var(--brand);background:var(--brand-c)}
@@ -163,3 +163,4 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 .mbtns button{border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:800;border-radius:10px;padding:10px 14px;min-height:44px}
 .mbtns .primary{background:var(--brand);color:#fff;border-color:var(--brand)}
 .mbtns .danger{margin-right:auto;color:var(--now)}
+[hidden]{display:none!important}
