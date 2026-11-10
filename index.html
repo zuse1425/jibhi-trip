@@ -43,13 +43,30 @@
 </div>
 
 <div id="tab-chat" class="tab" hidden>
-  <section class="day chatbox"><div class="dh"><div class="date">Group</div><h2>Chat</h2></div>
+  <section class="day chatbox"><div class="dh"><div class="date">Group</div><h2>Chat</h2>
+    <div class="seg" id="chatseg"><button type="button" data-cv="chat" class="on">💬 Messages</button><button type="button" data-cv="photos">📷 Photos <b id="photocount"></b></button></div></div>
     <div id="chatlist" class="chatlist"></div>
-    <form id="chatform" class="chatform"><input id="chatinput" placeholder="Message…" autocomplete="off" maxlength="1000"><button type="submit">Send</button></form>
+    <div id="photogrid" class="photogrid" hidden></div>
+    <form id="chatform" class="chatform"><button type="button" class="camb" data-act="photo" aria-label="Send a photo">📷</button><input id="chatinput" placeholder="Message…" autocomplete="off" maxlength="1000"><button type="submit">Send</button></form>
+    <input type="file" id="photoinput" accept="image/*" hidden>
   </section>
 </div>
 
+<div id="tab-money" class="tab" hidden>
+  <section class="day"><div class="dh"><div class="date">Money</div><h2>Who paid what</h2>
+    <div class="stay">Add what you paid · it's split equally between the people you tick. Whole rupees.</div>
+    <button type="button" class="routebtn" data-act="newexp">＋ Add an expense</button></div>
+    <div id="moneysum" class="moneysum"></div>
+  </section>
+  <section class="day"><div class="dh"><div class="date">All expenses</div><h2 id="exptotal">₹0</h2></div><div id="explist" class="explist"></div></section>
+</div>
+
 <div id="tab-info" class="tab" hidden>
+  <section class="day"><div class="dh"><div class="date">Live</div><h2>Where's everyone</h2>
+    <div class="stay">Opt-in · shares your latest spot with the crew only while the app is open. Switching off deletes it.</div>
+    <label class="switch"><input type="checkbox" id="locshare"><span>📡 Share my location</span></label></div>
+    <div id="loclist" class="loclist"></div>
+  </section>
   <section class="day"><div class="dh"><div class="date">Crew</div><h2>Who's in</h2><div id="memberlist" class="pchips"></div></div>
     <div class="pad16">
       <button type="button" class="wide" data-act="editon">✏️ Edit the plan</button>
@@ -68,6 +85,7 @@
   <button type="button" data-tab="plan" class="on"><span>🗓️</span>Plan</button>
   <button type="button" data-tab="ideas"><span>💡</span>Ideas<b id="badge-ideas" class="badge" hidden></b></button>
   <button type="button" data-tab="chat"><span>💬</span>Chat<b id="badge-chat" class="badge" hidden></b></button>
+  <button type="button" data-tab="money"><span>💸</span>Money</button>
   <button type="button" data-tab="info"><span>ℹ️</span>Info</button>
 </nav>
 <dialog id="modal"><form method="dialog" id="mform"></form></dialog>

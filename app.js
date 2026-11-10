@@ -3,14 +3,19 @@
   "use strict";
   const C = window.TRIP_CONFIG;
   const TRIP = C.TRIP_ID;
-  const LS_CACHE = "jt-cache-" + TRIP, LS_OUT = "jt-outbox-" + TRIP, LS_SEEN = "jt-seen-" + TRIP;
+  const LS_CACHE = "jt-cache-" + TRIP, LS_OUT = "jt-outbox-" + TRIP, LS_SEEN = "jt-seen-" + TRIP, LS_URLS = "jt-urls-" + TRIP, LS_LOC = "jt-loc-on";
+  const PEOPLE = C.PEOPLE || [], BUCKET = "trip-photos";
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => { const r = (Math.random() * 16) | 0; return (c === "x" ? r : (r & 3) | 8).toString(16); }));
 
   // ---------------- state ----------------
-  let S = { days: [], stops: [], suggestions: [], votes: [], comments: [], messages: [], members: [], pages: {} };
-  let sb = null, uid = null, myName = null, joined = false, online = navigator.onLine, editMode = false, tab = "plan", sugFilter = "open";
+  let S = { days: [], stops: [], suggestions: [], votes: [], comments: [], messages: [], members: [], pages: {}, trip_settings: [], expenses: [], locations: [] };
+  // row identity per table (default: id) — used by optimistic writes, realtime and upsert conflicts
+  const KEYS = { votes: ["suggestion_id", "user_id"], members: ["user_id"], trip_settings: ["key"], locations: ["user_id"] };
+  const sameRow = (t) => { const k = KEYS[t] || ["id"]; return (a, b) => k.every((f) => a[f] === b[f]); };
+  const CONFLICT = { votes: "suggestion_id,user_id", trip_settings: "trip_id,key", locations: "trip_id,user_id" };
+  let sb = null, uid = null, myName = null, joined = false, online = navigator.onLine, editMode = false, tab = "plan", sugFilter = "open", chatView = "chat";
   let outbox = JSON.parse(localStorage.getItem(LS_OUT) || "[]");
 
   function saveCache() { try { localStorage.setItem(LS_CACHE, JSON.stringify(S)); } catch (e) {} }
@@ -34,15 +39,15 @@
 
   // ---------------- writes (optimistic + outbox) ----------------
   function applyLocal(op) {
-    const list = S[op.table];
+    const list = S[op.table] || (S[op.table] = []);
+    const hit = (r) => Object.keys(op.match).every((k) => r[k] === op.match[k]);
     if (op.kind === "upsert") {
-      const key = op.table === "votes" ? (r) => r.suggestion_id === op.row.suggestion_id && r.user_id === op.row.user_id : (r) => r.id === op.row.id;
-      const i = list.findIndex(key);
+      const same = sameRow(op.table), i = list.findIndex((r) => same(r, op.row));
       if (i >= 0) list[i] = Object.assign({}, list[i], op.row); else list.push(Object.assign({}, op.row));
     } else if (op.kind === "update") {
-      const r = list.find((x) => x.id === op.match.id); if (r) Object.assign(r, op.row);
+      list.filter(hit).forEach((r) => Object.assign(r, op.row));
     } else if (op.kind === "delete") {
-      S[op.table] = list.filter((r) => !Object.keys(op.match).every((k) => r[k] === op.match[k]));
+      S[op.table] = list.filter((r) => !hit(r));
     }
   }
   function write(op) { applyLocal(op); outbox.push(op); localStorage.setItem(LS_OUT, JSON.stringify(outbox)); saveCache(); render(); flush(); }
@@ -55,7 +60,7 @@
       let res;
       try {
         const t = sb.from(op.table);
-        if (op.kind === "upsert") res = await t.upsert(op.row, op.table === "votes" ? { onConflict: "suggestion_id,user_id" } : undefined);
+        if (op.kind === "upsert") res = await t.upsert(op.row, CONFLICT[op.table] ? { onConflict: CONFLICT[op.table] } : undefined);
         else if (op.kind === "update") res = await t.update(op.row).match(op.match);
         else if (op.kind === "delete") res = await t.delete().match(op.match);
       } catch (e) { break; } // network: retry later
@@ -88,27 +93,26 @@
     }
     if (!name) { await sb.auth.signOut(); uid = null; showGate(`${session.user.email || "This account"} isn't on the trip list. Sign in with the account Naman added.`); return false; }
     joined = true; myName = name; localStorage.setItem("jt-name", myName);
-    loadCache(); await loadAll(); showApp(); subscribe(); flush(); return true;
+    loadCache(); await loadAll(); showApp(); subscribe(); flush(); startLoc(); return true;
   }
   async function loadAll() {
     const q = (t, o) => { let x = sb.from(t).select("*").eq("trip_id", TRIP); return o ? x.order(o) : x; };
-    const [d, s, g, v, c, m, mem, pg] = await Promise.all([q("days", "sort"), q("stops"), q("suggestions", "created_at"), q("votes"), q("comments", "created_at"), q("messages", "created_at"), q("members"), q("trip_pages")]);
+    const [d, s, g, v, c, m, mem, pg, st, ex, lo] = await Promise.all([q("days", "sort"), q("stops"), q("suggestions", "created_at"), q("votes"), q("comments", "created_at"), q("messages", "created_at"), q("members"), q("trip_pages"), q("trip_settings"), q("expenses", "created_at"), q("locations")]);
     const ok = (r) => r && !r.error && r.data;
     if (ok(d) && d.data.length) S.days = d.data;
     if (ok(s) && s.data.length) S.stops = s.data;
     if (ok(g)) S.suggestions = g.data; if (ok(v)) S.votes = v.data; if (ok(c)) S.comments = c.data; if (ok(m)) S.messages = m.data; if (ok(mem)) S.members = mem.data;
     if (ok(pg)) S.pages = Object.fromEntries(pg.data.map((r) => [r.id, r.html]));
+    if (ok(st)) S.trip_settings = st.data; if (ok(ex)) S.expenses = ex.data; if (ok(lo)) S.locations = lo.data;
     // re-apply anything still waiting in the outbox
     outbox.forEach(applyLocal);
     saveCache(); render();
   }
   function subscribe() {
     const ch = sb.channel("trip-" + TRIP);
-    ["stops", "suggestions", "votes", "comments", "messages", "members", "days"].forEach((t) => {
-      ch.on("postgres_changes", { event: "*", schema: "public", table: t, filter: t === "days" ? undefined : "trip_id=eq." + TRIP }, (p) => {
-        const list = S[t];
-        const key = t === "votes" ? (r, o) => r.suggestion_id === o.suggestion_id && r.user_id === o.user_id
-          : t === "members" ? (r, o) => r.user_id === o.user_id : t === "days" ? (r, o) => r.id === o.id : (r, o) => r.id === o.id;
+    ["stops", "suggestions", "votes", "comments", "messages", "members", "days", "trip_settings", "expenses", "locations"].forEach((t) => {
+      ch.on("postgres_changes", { event: "*", schema: "public", table: t, filter: "trip_id=eq." + TRIP }, (p) => {
+        const list = S[t] || (S[t] = []), key = sameRow(t);
         if (p.eventType === "DELETE") S[t] = list.filter((r) => !key(r, p.old));
         else { const i = list.findIndex((r) => key(r, p.new)); if (i >= 0) list[i] = p.new; else list.push(p.new); }
         saveCache(); render();
@@ -125,7 +129,10 @@
     updateSync();
   });
   window.addEventListener("offline", () => { online = false; updateSync(); });
-  document.addEventListener("visibilitychange", () => { if (!document.hidden && sb && joined) { loadAll(); flush(); } });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) { stopWatch(); return; }
+    if (sb && joined) { loadAll(); flush(); startLoc(); }
+  });
 
   // ---------------- sign in (Google) ----------------
   // Anyone can finish Google sign-in, but only emails on trip_allowlist become members (claim_membership).
@@ -156,8 +163,9 @@
   }
   async function signOut() {
     if (!sb) return; $("#modal").close();
+    stopWatch(); await clearMyLoc();
     try { await sb.auth.signOut(); } catch (e) {}
-    [LS_CACHE, LS_OUT, LS_SEEN, "jt-name"].forEach((k) => localStorage.removeItem(k));
+    [LS_CACHE, LS_OUT, LS_SEEN, LS_URLS, LS_LOC, "jt-name"].forEach((k) => localStorage.removeItem(k));
     location.reload();
   }
   // ---------------- gate: nothing is rendered or fetched until signed in ----------------
@@ -182,10 +190,20 @@
   const KIND = { meal: "🍽️", drive: "🚐", do: "📸", stay: "🛏️", hike: "🥾", meet: "👋" };
   const LEG = { car: "🚐", walk: "🚶", hike: "🥾" };
   const live_stops = () => S.stops.filter((s) => !s.deleted);
+  // US7: once Option A or B is picked, the other one is hidden everywhere (its stops are kept)
+  const chosenOpt = () => { const r = (S.trip_settings || []).find((x) => x.key === "chosen_opt"); return r && (r.value === "A" || r.value === "B") ? r.value : null; };
+  const visibleDays = () => { const c = chosenOpt(); return S.days.filter((d) => !d.opt || !c || d.opt === c); };
+  function pickOpt(v) {
+    const d = S.days.find((x) => x.opt === v);
+    if (v && !confirm(`Go with Option ${v}${d ? " · " + d.title : ""} for Sun–Mon? This changes the plan for everyone.`)) return;
+    if (!v && !confirm("Undo the choice and show both options again?")) return;
+    write({ table: "trip_settings", kind: "upsert", row: { trip_id: TRIP, key: "chosen_opt", value: v || null } });
+    toast(v ? `Going with Option ${v} ✅` : "Showing both options");
+  }
 
   function render() {
     if (!joined) return;
-    renderPages(); renderNow(); renderPlan(); renderIdeas(); renderChat(); renderInfo(); updateSync();
+    renderPages(); renderNow(); renderPlan(); renderIdeas(); renderChat(); renderMoney(); renderInfo(); updateSync();
     $("#mename").textContent = joined ? myName : "Sign in";
     document.body.classList.toggle("editing", editMode);
     $("#editbar").hidden = !editMode;
@@ -209,13 +227,13 @@
       return;
     }
     if (now > last + 3 * 36e5) { card.innerHTML = `<div class="nc-k"><span>Trip done</span>${clock}</div><div class="nc-t">Hope it was epic 🏔️</div>`; return; }
-    const rows = [];
-    S.days.forEach((d) => {
+    const rows = [], picked = chosenOpt();
+    visibleDays().forEach((d) => {
       const ds = stops.filter((s) => s.day === d.id).sort((a, b) => a._ts - b._ts);
       if (!ds.length || now < ds[0]._ts - 12 * 36e5 || now > ds[ds.length - 1]._ts + 3 * 36e5) return;
       let cur = null, nxt = null;
       ds.forEach((s) => { if (s._ts <= now) cur = s; else if (!nxt) nxt = s; });
-      const lab = d.opt ? `Option ${d.opt} · ` : "";
+      const lab = d.opt && !picked ? `Option ${d.opt} · ` : "";
       rows.push(`<div class="nc-row">${cur ? `<div class="nc-t">${lab}Now: ${esc(cur.name)}</div><div class="nc-s">📍 ${esc(cur.area || "")}</div>` : `<div class="nc-t">${lab}Up first: ${esc(nxt.name)}</div>`}
         ${nxt && cur ? `<div class="nc-s">Next · ${fmtClock(nxt._ts)} · ${esc(nxt.name)}</div>` : ""}
         <div class="nc-btns">${A("📍 Map", mapLink(cur || nxt), "")}${A("🧭 Go", goLink(nxt || cur), "sec")}<a href="#s-${(cur || nxt).id}" class="sec" data-tab-go="plan">Jump ↓</a></div></div>`);
@@ -237,10 +255,13 @@
   }
 
   function renderPlan() {
-    const nav = [`<a href="#reach">🚌 Getting there</a>`].concat(S.days.map((d) => `<a href="#day-${d.id}">${esc(d.opt ? (d.opt === "A" ? "Sun A · " : "Sun B · ") + d.title : d.kicker.split(" · ")[0])}</a>`));
+    const days = visibleDays(), picked = chosenOpt();
+    const nav = [`<a href="#reach">🚌 Getting there</a>`].concat(days.map((d) => `<a href="#day-${d.id}">${esc(d.opt ? (picked ? "Sun–Mon · " : `Sun ${d.opt} · `) + d.title : d.kicker.split(" · ")[0])}</a>`));
     $("#daynav").innerHTML = nav.join("");
     const now = Date.now();
-    const html = S.days.map((d, i) => {
+    const optDays = S.days.filter((d) => d.opt);
+    let pickDone = false;
+    const html = days.map((d, i) => {
       const ds = live_stops().filter((s) => s.day === d.id).sort((a, b) => ts(a.date, a.t) - ts(b.date, b.t));
       let cur = null, nxt = null;
       ds.forEach((s) => { if (ts(s.date, s.t) <= now) cur = s.id; else if (!nxt) nxt = s.id; });
@@ -248,7 +269,14 @@
       let lastDate = ds[0] && ds[0].date, out = "";
       ds.forEach((s) => { if (s.date !== lastDate) { out += `<div class="sep">${fmtDay(ts(s.date, "12:00"))}</div>`; lastDate = s.date; } out += stopHTML(s, cur, nxt); });
       const openIdeas = S.suggestions.filter((g) => g.status === "open" && g.day === d.id).length;
-      const pickHdr = d.opt === "A" ? `<p class="picklabel">Sun 15 – Mon 16 · we'll pick one on Saturday</p><div class="pick"><a href="#day-dA">A · Tirthan</a><a href="#day-dB">B · Manali</a></div>` : "";
+      let pickHdr = "";
+      if (d.opt && !pickDone) {
+        pickDone = true;
+        pickHdr = picked
+          ? `<div class="picked" id="pick"><span>✅ Going with <b>Option ${esc(picked)} · ${esc(d.title)}</b><small>Sun 15 – Mon 16 · the other option is hidden</small></span><button type="button" data-pick="">Change</button></div>`
+          : `<p class="picklabel" id="pick">Sun 15 – Mon 16 · pick one on Saturday</p><div class="pick">${optDays.map((o) => `<a href="#day-${o.id}">${esc(o.opt)} · ${esc(o.title)}</a>`).join("")}</div>
+             <div class="pickgo">${optDays.map((o) => `<button type="button" data-pick="${esc(o.opt)}">✅ Go with ${esc(o.opt)}</button>`).join("")}</div>`;
+      }
       return pickHdr + `<section class="day ${d.opt === "B" ? "b" : d.opt === "A" ? "a" : ""}" id="day-${d.id}"><div class="dh"><div class="date">${esc(d.kicker)}</div><h2>${esc(d.title)}</h2>
         <div class="stay">🛏️ ${esc(d.stay)}</div>${A("🧭 Full day route", d.route, "routebtn")}
         ${openIdeas ? `<button class="ideachip" data-tab-go="ideas" data-sugday="${d.id}">💡 ${openIdeas} open idea${openIdeas > 1 ? "s" : ""} for this day</button>` : ""}</div>
@@ -287,17 +315,224 @@
     box.innerHTML = S.messages.length ? S.messages.map((m) => {
       const d = fmtDay(Date.parse(m.created_at)), sep = d !== lastDay ? `<div class="cday">${d}</div>` : ""; lastDay = d;
       const me = m.user_id === uid;
-      return sep + `<div class="msg ${me ? "me" : ""}">${me ? "" : `<b>${esc(nameOf(m.user_id))}</b>`}<span>${esc(m.text)}</span><i>${fmtClock(Date.parse(m.created_at))}</i></div>`;
+      return sep + `<div class="msg ${me ? "me" : ""} ${m.photo ? "hasph" : ""}">${me ? "" : `<b>${esc(nameOf(m.user_id))}</b>`}${m.photo ? photoHTML(m, "mph") : ""}${m.text ? `<span>${esc(m.text)}</span>` : ""}<i>${fmtClock(Date.parse(m.created_at))}</i></div>`;
     }).join("") : `<p class="empty">No messages yet. Say hi 👋</p>`;
     if (atBottom || tab === "chat") box.scrollTop = box.scrollHeight;
     const seen = +localStorage.getItem(LS_SEEN) || 0;
     if (tab === "chat" && S.messages.length) localStorage.setItem(LS_SEEN, Date.parse(S.messages[S.messages.length - 1].created_at));
     const unread = S.messages.filter((m) => Date.parse(m.created_at) > seen && m.user_id !== uid).length;
     const b = $("#badge-chat"); b.hidden = !unread || tab === "chat"; b.textContent = unread;
+    renderPhotos();
   }
 
   function renderInfo() {
     $("#memberlist").innerHTML = S.members.length ? S.members.map((m) => `<span class="pchip static">${esc(m.name)}${m.user_id === uid ? " (you)" : ""}</span>`).join("") : `<span class="muted">Nobody joined yet</span>`;
+    renderLoc();
+  }
+
+  // ---------------- US8 · money ----------------
+  const EXPK = { food: "🍽️ Food", stay: "🛏️ Stay", cab: "🚐 Cab", fuel: "⛽ Fuel", toll: "🧾 Tolls / tax", fun: "🎟️ Fun", other: "💸 Other" };
+  const inr = (n) => "₹" + Math.abs(n).toLocaleString("en-IN");
+  const live_exp = () => (S.expenses || []).filter((e) => !e.deleted);
+  // equal split in whole rupees; the remainder goes one rupee each to the first people in PEOPLE order
+  function shares(amount, split) {
+    const names = PEOPLE.filter((p) => split.includes(p)).concat(split.filter((p) => !PEOPLE.includes(p)));
+    const n = names.length; if (!n) return {};
+    const base = Math.floor(amount / n), rem = amount - base * n;
+    return Object.fromEntries(names.map((p, i) => [p, base + (i < rem ? 1 : 0)]));
+  }
+  function balances(list) {
+    const B = {}, get = (p) => B[p] || (B[p] = { paid: 0, share: 0, net: 0 });
+    PEOPLE.forEach(get);
+    (list || live_exp()).forEach((e) => { get(e.paid_by).paid += e.amount; Object.entries(shares(e.amount, e.split || [])).forEach(([p, v]) => (get(p).share += v)); });
+    Object.values(B).forEach((b) => (b.net = b.paid - b.share));
+    return B;
+  }
+  // greedy: largest debtor pays largest creditor → at most n−1 transfers
+  function settle(B) {
+    const cr = [], db = [], out = [];
+    Object.entries(B).forEach(([p, b]) => { if (b.net > 0) cr.push([p, b.net]); else if (b.net < 0) db.push([p, -b.net]); });
+    while (cr.length && db.length) {
+      cr.sort((a, b) => b[1] - a[1]); db.sort((a, b) => b[1] - a[1]);
+      const amt = Math.min(cr[0][1], db[0][1]);
+      out.push({ from: db[0][0], to: cr[0][0], amount: amt });
+      cr[0][1] -= amt; db[0][1] -= amt;
+      if (!cr[0][1]) cr.shift(); if (!db[0][1]) db.shift();
+    }
+    return out;
+  }
+  window.TripMath = { shares, balances, settle };
+
+  function renderMoney() {
+    const list = live_exp().slice().sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+    const total = list.reduce((t, e) => t + e.amount, 0), B = balances(list), T = settle(B);
+    $("#exptotal").textContent = `${inr(total)} total`;
+    $("#moneysum").innerHTML = list.length ? `<div class="bal">${Object.entries(B).map(([p, b]) => `<div class="brow ${p === myName ? "me" : ""}"><span class="bn">${esc(p)}${p === myName ? " <i>(you)</i>" : ""}<small>paid ${inr(b.paid)} · share ${inr(b.share)}</small></span><b class="${b.net > 0 ? "pos" : b.net < 0 ? "neg" : ""}">${b.net > 0 ? "gets " : b.net < 0 ? "owes " : ""}${b.net ? inr(b.net) : "square"}</b></div>`).join("")}</div>
+      <div class="grp pad">Settle up</div>
+      <div class="settle">${T.length ? T.map((t) => `<div class="srow"><span><b>${esc(t.from)}</b> → <b>${esc(t.to)}</b></span><b>${inr(t.amount)}</b></div>`).join("") : `<p class="muted">All square ✅</p>`}</div>`
+      : `<p class="empty">Nothing yet. Add the first bill 🧾</p>`;
+    let lastDay = "";
+    $("#explist").innerHTML = list.length ? list.map((e) => {
+      const d = fmtDay(Date.parse(e.created_at)), sep = d !== lastDay ? `<div class="sep">${d}</div>` : ""; lastDay = d;
+      const all = PEOPLE.length && PEOPLE.every((p) => (e.split || []).includes(p));
+      return sep + `<button type="button" class="exp" data-exp="${e.id}"><span class="ek">${(EXPK[e.kind] || EXPK.other).split(" ")[0]}</span>
+        <span class="eb"><b>${esc(e.title)}</b><small>${esc(e.paid_by)} paid · ${all ? "split all " + PEOPLE.length : "split " + esc((e.split || []).join(", "))}</small></span><span class="ea">${inr(e.amount)}</span></button>`;
+    }).join("") : "";
+  }
+
+  function expForm(e) {
+    const isNew = !e;
+    e = e || { title: "", amount: "", kind: "food", paid_by: PEOPLE.includes(myName) ? myName : PEOPLE[0], split: PEOPLE.slice() };
+    modal(`<h3>${isNew ? "Add an expense" : "Edit expense"}</h3>
+      <label>What<input name="title" required maxlength="120" value="${esc(e.title)}" placeholder="e.g. Breakfast at the café"></label>
+      <div class="grid2"><label>Amount (₹)<input name="amount" type="number" inputmode="numeric" min="1" max="1000000" step="1" required value="${esc(e.amount)}"></label>
+      <label>Type<select name="kind">${opt(Object.entries(EXPK), e.kind)}</select></label></div>
+      <label>Paid by<select name="paid_by">${opt(PEOPLE.map((p) => [p, p]), e.paid_by)}</select></label>
+      <div class="splitset"><span>Split between</span><div class="pchips">${PEOPLE.map((p) => `<label class="pchip chk"><input type="checkbox" name="split" value="${esc(p)}" ${(e.split || []).includes(p) ? "checked" : ""}>${esc(p)}</label>`).join("")}</div></div>
+      <div class="mbtns">${isNew ? "" : `<button value="delete" class="danger" formnovalidate>Delete</button>`}<button value="cancel" formnovalidate>Cancel</button><button value="save" class="primary">Save</button></div>`,
+      (f, btn) => {
+        if (btn === "delete") { if (confirm("Delete this expense for everyone?")) write({ table: "expenses", kind: "update", match: { id: e.id }, row: { deleted: true } }); return true; }
+        if (btn !== "save") return true;
+        const split = [...f.querySelectorAll("input[name=split]:checked")].map((i) => i.value);
+        const amount = Math.round(Number(f.amount.value));
+        if (!split.length) { toast("Tick at least one person to split with"); return false; }
+        if (!(amount >= 1 && amount <= 1000000)) { toast("Amount should be ₹1 – ₹10,00,000"); return false; }
+        const row = { title: f.title.value.trim(), amount, kind: f.kind.value, paid_by: f.paid_by.value, split };
+        if (isNew) write({ table: "expenses", kind: "upsert", row: Object.assign({ id: uuid(), trip_id: TRIP, created_by: uid, created_at: new Date().toISOString(), deleted: false }, row) });
+        else write({ table: "expenses", kind: "update", match: { id: e.id }, row });
+        return true;
+      });
+  }
+
+  // ---------------- US9 · photos ----------------
+  // private bucket → short-lived signed URLs, cached until 30 min before expiry
+  const URL_TTL = 6 * 3600;
+  const urls = (() => { try { return JSON.parse(localStorage.getItem(LS_URLS)) || {}; } catch (e) { return {}; } })();
+  const tried = {};
+  const fresh = (p) => urls[p] && urls[p].exp > Date.now() + 30 * 60e3;
+  let urlT;
+  function photoUrl(path) { if (fresh(path)) return urls[path].u; clearTimeout(urlT); urlT = setTimeout(fetchUrls, 30); return null; }
+  async function fetchUrls() {
+    if (!sb || !joined || !navigator.onLine) return;
+    const paths = [...new Set(S.messages.filter((m) => m.photo).map((m) => m.photo))].filter((p) => !fresh(p) && !(tried[p] > Date.now() - 5 * 60e3));
+    if (!paths.length) return;
+    paths.forEach((p) => (tried[p] = Date.now()));
+    const { data, error } = await sb.storage.from(BUCKET).createSignedUrls(paths, URL_TTL);
+    if (error || !data) return;
+    data.forEach((d) => { if (d.signedUrl) urls[d.path] = { u: d.signedUrl, exp: Date.now() + URL_TTL * 1000 }; });
+    try { localStorage.setItem(LS_URLS, JSON.stringify(Object.fromEntries(Object.entries(urls).filter(([, v]) => /^https?:/.test(v.u))))); } catch (e) {}
+    renderChat();
+  }
+  function photoHTML(m, cls) {
+    const u = photoUrl(m.photo);
+    return u ? `<a class="${cls}" href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="${esc(m.text || "Photo")}" loading="lazy"></a>` : `<span class="${cls} ph0">📷</span>`;
+  }
+  async function shrink(file) {
+    const MAX = 1600;
+    let img;
+    try { img = await createImageBitmap(file, { imageOrientation: "from-image" }); }
+    catch (e) { img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(file); }); }
+    const w = img.width, h = img.height, k = Math.min(1, MAX / Math.max(w, h));
+    const c = document.createElement("canvas"); c.width = Math.round(w * k); c.height = Math.round(h * k);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    return new Promise((res) => c.toBlob(res, "image/jpeg", 0.82));
+  }
+  async function pickedPhoto(file) {
+    if (!file) return;
+    if (!navigator.onLine) { toast("Photos need a connection · text messages still queue"); return; }
+    let blob;
+    try { blob = await shrink(file); } catch (e) { toast("Couldn't read that photo"); return; }
+    if (!blob) { toast("Couldn't read that photo"); return; }
+    const preview = URL.createObjectURL(blob);
+    modal(`<h3>📷 Send a photo</h3><img class="pv" src="${preview}" alt="">
+      <label>Caption <span class="muted">(optional)</span><input name="cap" maxlength="300"></label>
+      <p class="muted small">${Math.round(blob.size / 1024)} KB · only the crew can see it</p>
+      <div class="mbtns"><button value="cancel" formnovalidate>Cancel</button><button value="save" class="primary">Send</button></div>`, async (f, btn) => {
+      if (btn !== "save") { URL.revokeObjectURL(preview); return true; }
+      const id = uuid(), path = `${TRIP}/${id}.jpg`;
+      toast("Uploading…");
+      const { error } = await sb.storage.from(BUCKET).upload(path, blob, { contentType: "image/jpeg", upsert: false });
+      if (error) { toast("Upload failed: " + error.message); return false; }
+      urls[path] = { u: preview, exp: Date.now() + URL_TTL * 1000 }; // show our own copy straight away
+      write({ table: "messages", kind: "upsert", row: { id, trip_id: TRIP, user_id: uid, text: f.cap.value.trim(), photo: path, created_at: new Date().toISOString() } });
+      toast("Photo sent 📷"); return true;
+    }, { focus: false });
+  }
+  async function deletePhoto(id) {
+    const m = S.messages.find((x) => x.id === id); if (!m || m.user_id !== uid) return;
+    if (!navigator.onLine) { toast("Connect to delete photos"); return; }
+    if (!confirm("Delete this photo for everyone?")) return;
+    const { error } = await sb.storage.from(BUCKET).remove([m.photo]);
+    if (error) { toast("Couldn't delete: " + error.message); return; }
+    delete urls[m.photo];
+    write({ table: "messages", kind: "delete", match: { id } });
+  }
+  function renderPhotos() {
+    const ph = S.messages.filter((m) => m.photo).slice().reverse();
+    $("#photocount").textContent = ph.length || "";
+    if (chatView !== "photos") return;
+    $("#photogrid").innerHTML = ph.length ? ph.map((m) => `<figure class="tile">${photoHTML(m, "tph")}
+      <figcaption>${esc(nameOf(m.user_id))} · ${ago(m.created_at)}${m.text ? " · " + esc(m.text) : ""}</figcaption>
+      ${m.user_id === uid ? `<button type="button" class="phdel" data-delphoto="${m.id}" aria-label="Delete photo">✕</button>` : ""}</figure>`).join("")
+      : `<p class="empty">No photos yet. Tap 📷 in Messages to share one.</p>`;
+  }
+  function showChatView() {
+    $("#chatlist").hidden = chatView !== "chat"; $("#chatform").hidden = chatView !== "chat"; $("#photogrid").hidden = chatView !== "photos";
+    document.querySelectorAll("#chatseg button").forEach((b) => b.classList.toggle("on", b.dataset.cv === chatView));
+    renderChat();
+  }
+
+  // ---------------- US10 · live location (opt-in) ----------------
+  let watchId = null, myPos = null, lastSent = 0, lastSentPos = null;
+  const locOn = () => localStorage.getItem(LS_LOC) === "1";
+  function km(a, b) {
+    const R = 6371, r = Math.PI / 180, dLat = (b.lat - a.lat) * r, dLng = (b.lng - a.lng) * r;
+    const x = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(x));
+  }
+  function startLoc() {
+    if (!locOn() || !joined || document.hidden || watchId != null) return;
+    if (!("geolocation" in navigator)) { toast("Location isn't available here"); setLoc(false); return; }
+    watchId = navigator.geolocation.watchPosition(onPos, (err) => {
+      if (err.code === 1) { toast("Location permission is off for this site"); setLoc(false); }
+    }, { enableHighAccuracy: false, maximumAge: 60000, timeout: 30000 });
+  }
+  function stopWatch() { if (watchId != null && navigator.geolocation) navigator.geolocation.clearWatch(watchId); watchId = null; }
+  async function onPos(p) {
+    myPos = { lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy };
+    const now = Date.now(), moved = lastSentPos ? km(lastSentPos, myPos) * 1000 : Infinity;
+    if (now - lastSent >= 60e3 && (moved >= 100 || now - lastSent >= 120e3) && sb && navigator.onLine) {
+      lastSent = now; lastSentPos = myPos;
+      const row = { trip_id: TRIP, user_id: uid, lat: myPos.lat, lng: myPos.lng, acc: Math.round(myPos.acc || 0), updated_at: new Date().toISOString() };
+      applyLocal({ table: "locations", kind: "upsert", row });
+      const { error } = await sb.from("locations").upsert(row, { onConflict: CONFLICT.locations });
+      if (error) { lastSent = 0; toast("Couldn't share location: " + error.message); }
+    }
+    renderInfo();
+  }
+  async function setLoc(on) {
+    try { localStorage.setItem(LS_LOC, on ? "1" : "0"); } catch (e) {}
+    const box = $("#locshare"); if (box) box.checked = on;
+    if (on) { startLoc(); toast("Sharing your location while the app is open 📡"); }
+    else { stopWatch(); myPos = null; lastSent = 0; lastSentPos = null; await clearMyLoc(); }
+    renderInfo();
+  }
+  async function clearMyLoc() {
+    if (!uid) return;
+    applyLocal({ table: "locations", kind: "delete", match: { user_id: uid } });
+    if (sb && navigator.onLine) { try { await sb.from("locations").delete().match({ trip_id: TRIP, user_id: uid }); } catch (e) {} }
+  }
+  function renderLoc() {
+    const el = $("#loclist"); if (!el) return;
+    $("#locshare").checked = locOn();
+    const rows = (S.locations || []).slice().sort((a, b) => Date.parse(b.updated_at) - Date.parse(a.updated_at));
+    el.innerHTML = rows.length ? rows.map((l) => {
+      const me = l.user_id === uid, stale = Date.now() - Date.parse(l.updated_at) > 30 * 60e3, q = `${l.lat.toFixed(5)},${l.lng.toFixed(5)}`;
+      const far = myPos && !me ? km(myPos, l) : null;
+      return `<div class="lrow ${stale ? "stale" : ""}"><div><b>${esc(nameOf(l.user_id))}${me ? " (you)" : ""}</b>
+        <small>${stale ? "last seen " : ""}${ago(l.updated_at)}${ago(l.updated_at) === "now" ? "" : " ago"}${far != null ? ` · ${far < 1 ? Math.round(far * 1000) + " m" : far.toFixed(1) + " km"} away` : ""}${l.acc ? ` · ±${Math.round(l.acc)} m` : ""}</small></div>
+        <div class="btns">${A("📍 Map", search(q), "btn ghost")}${me ? "" : A("🧭 Go", dir(q), "btn")}</div></div>`;
+    }).join("") : `<p class="empty">Nobody's sharing right now.</p>`;
   }
 
   function updateSync() {
@@ -332,7 +567,7 @@
 
   const DATES = [["2026-11-13", "Fri 13"], ["2026-11-14", "Sat 14"], ["2026-11-15", "Sun 15"], ["2026-11-16", "Mon 16"]];
   const opt = (arr, v) => arr.map(([k, l]) => `<option value="${esc(k)}" ${k === v ? "selected" : ""}>${esc(l)}</option>`).join("");
-  const dayOpts = (v) => opt(S.days.map((d) => [d.id, d.opt ? `Sun–Mon · Option ${d.opt} (${d.title})` : d.kicker]), v);
+  const dayOpts = (v) => opt(S.days.filter((d) => visibleDays().includes(d) || d.id === v).map((d) => [d.id, d.opt ? `Sun–Mon · Option ${d.opt} (${d.title})` : d.kicker]), v);
   const defaultDate = (day) => ({ d1: "2026-11-13", d2: "2026-11-14" }[day] || "2026-11-15");
 
   function stopForm(s, preset) {
@@ -416,6 +651,7 @@
       write(mine ? { table: "votes", kind: "delete", match: { suggestion_id: d.vote, user_id: uid } } : { table: "votes", kind: "upsert", row: { suggestion_id: d.vote, user_id: uid, trip_id: TRIP } });
       return;
     }
+    if (d.pick !== undefined) { pickOpt(d.pick); return; }
     if (d.decide) { decideForm(S.suggestions.find((s) => s.id === d.decide)); return; }
     if (d.drop) { write({ table: "suggestions", kind: "update", match: { id: d.drop }, row: { status: "dropped" } }); return; }
     if (d.reopen) {
@@ -424,6 +660,11 @@
       write({ table: "suggestions", kind: "update", match: { id: d.reopen }, row: { status: "open", stop_id: null } }); return;
     }
     if (d.act === "newsug") { sugForm(null); return; }
+    if (d.act === "newexp") { expForm(null); return; }
+    if (d.exp) { expForm(S.expenses.find((x) => x.id === d.exp)); return; }
+    if (d.cv) { chatView = d.cv; showChatView(); return; }
+    if (d.act === "photo") { if (!navigator.onLine) { toast("Photos need a connection · text messages still queue"); return; } $("#photoinput").click(); return; }
+    if (d.delphoto) { deletePhoto(d.delphoto); return; }
     if (d.act === "editon") { if (!joined) return showJoin(); editMode = true; tab = "plan"; showTab(); render(); toast("Edit mode on · tap ✏️ on any stop"); return; }
     if (d.act === "editoff") { editMode = false; render(); return; }
     if (d.act === "rename") { showJoin(); return; }
@@ -448,6 +689,9 @@
       i.value = "";
     }
   });
+
+  $("#photoinput").addEventListener("change", (e) => { const f = e.target.files && e.target.files[0]; e.target.value = ""; pickedPhoto(f); });
+  $("#locshare").addEventListener("change", (e) => setLoc(e.target.checked));
 
   let toastT;
   function toast(msg) { const el = $("#toast"); el.textContent = msg; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (el.hidden = true), 3200); }

@@ -96,7 +96,7 @@ footer{text-align:center;font-size:.85rem;color:var(--ink2);margin-top:20px}
 /* ---- app shell ---- */
 main{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
 .hrow{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.me{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;font-weight:700;font-size:.82rem;min-height:36px}
+.hrow .me{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;font-weight:700;font-size:.82rem;min-height:36px}
 .sync{display:inline-block;font-size:.72rem;font-weight:800;border-radius:999px;padding:2px 8px;vertical-align:1px}
 .sync.ok{background:var(--brand-c);color:var(--brand)}.sync.wait{background:var(--b2-c);color:var(--b2)}.sync.off{background:var(--line);color:var(--ink2)}
 .daynav{position:sticky;top:0;z-index:9;display:flex;gap:6px;overflow-x:auto;margin:10px -12px 0;padding:10px 12px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);scrollbar-width:none}
@@ -168,3 +168,72 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 .gate{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
 .gcard{width:min(380px,100%);background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:28px 20px;display:grid;gap:14px;justify-items:center;text-align:center}
 .gcard img{border-radius:18px}.gcard h1{margin:0}.gcard p{margin:0}
+
+/* ---- US7 · option lock-in ---- */
+.pickgo{display:flex;gap:8px;margin:10px 0 -4px}
+.pickgo button{flex:1;border:1px dashed var(--brand);background:var(--surface);color:var(--brand);font:inherit;font-weight:800;font-size:.86rem;border-radius:12px;padding:10px;min-height:44px}
+.pickgo button+button{border-color:var(--b2);color:var(--b2)}
+.picked{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 -4px;background:var(--brand-c);color:var(--brand);border-radius:14px;padding:12px 14px;font-size:.9rem}
+.picked small{display:block;margin:2px 0 0;color:var(--ink2)}
+.picked button{flex:0 0 auto;border:1px solid var(--brand);background:var(--surface);color:var(--brand);font:inherit;font-weight:800;font-size:.82rem;border-radius:10px;padding:8px 12px;min-height:40px}
+
+/* ---- US8 · money ---- */
+.moneysum{padding:4px 0 8px}
+.bal{padding:4px 16px}
+.brow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);min-height:52px}
+.brow:last-child{border-bottom:0}
+.brow.me .bn{color:var(--brand)}
+.bn{font-weight:800}.bn i{font-style:normal;font-weight:600;color:var(--ink2);font-size:.8rem}
+.bn small{margin:2px 0 0;font-weight:600}
+.brow b{font-size:.92rem;white-space:nowrap}
+.pos{color:var(--brand)}.neg{color:var(--now)}
+.grp.pad{padding:0 16px}
+.settle{padding:0 16px 8px}
+.settle p{margin:6px 0 10px}
+.srow{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--b2-c);color:var(--ink);border-radius:12px;padding:10px 12px;margin:6px 0;min-height:44px}
+.srow>b{color:var(--b2)}
+.explist{padding:0 12px 10px}
+.explist .sep{margin:6px -12px 2px}
+.exp{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;font:inherit;color:var(--ink);background:none;border:0;border-bottom:1px solid var(--line);padding:10px 0;min-height:56px;cursor:pointer}
+.ek{width:36px;height:36px;border-radius:50%;background:var(--b2-c);display:flex;align-items:center;justify-content:center}
+.eb b{display:block;font-size:.95rem;line-height:1.3}.eb small{margin:1px 0 0}
+.ea{font-weight:800;white-space:nowrap}
+.splitset{display:grid;gap:4px;font-size:.8rem;font-weight:700;color:var(--ink2)}
+.splitset .pchips{margin-top:2px}
+#mform label.pchip.chk{display:inline-flex;align-items:center;gap:6px;color:var(--ink);font-size:.88rem;min-height:40px;cursor:pointer}
+#mform label.pchip.chk input{width:18px;height:18px;padding:0;margin:0;accent-color:var(--brand)}
+#mform label.pchip.chk:has(input:checked){background:var(--brand-c);border-color:var(--brand);color:var(--brand)}
+
+/* ---- US9 · photos ---- */
+.seg{display:flex;gap:6px;margin-top:10px}
+.seg button{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;font-size:.84rem;border-radius:999px;padding:8px 10px;min-height:40px}
+.seg button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.seg b{opacity:.75;margin-left:2px}
+.chatform .camb{background:var(--brand-c);color:var(--brand);font-size:1.1rem;padding:0 12px}
+.msg.hasph{max-width:78%;padding:4px 4px 6px}
+.msg.hasph>b,.msg.hasph>span{padding:0 6px}
+.mph{display:block;border-radius:10px;overflow:hidden;margin:2px 0 4px;background:var(--line)}
+.mph img{display:block;width:100%;max-height:320px;object-fit:cover}
+.ph0{display:flex;align-items:center;justify-content:center;min-height:140px;min-width:180px;font-size:1.6rem;color:var(--ink2)}
+.photogrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:12px}
+.photogrid .empty{grid-column:1/-1}
+.tile{position:relative;margin:0;border-radius:12px;overflow:hidden;background:var(--bg)}
+.tph{display:block;aspect-ratio:1;background:var(--line)}
+.tph img{display:block;width:100%;height:100%;object-fit:cover}
+.tile figcaption{font-size:.72rem;color:var(--ink2);padding:5px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phdel{position:absolute;top:6px;right:6px;width:36px;height:36px;border:0;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-weight:800}
+.pv{display:block;width:100%;max-height:50vh;object-fit:contain;border-radius:12px;background:var(--bg)}
+
+/* ---- US10 · location ---- */
+.switch{display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:800;color:var(--brand);background:var(--brand-c);border-radius:12px;padding:10px 12px;min-height:48px;cursor:pointer}
+.switch input{width:22px;height:22px;margin:0;accent-color:var(--brand)}
+.loclist{padding:4px 16px 12px}
+.lrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:0}
+.lrow small{margin:2px 0 0}
+.lrow .btns{margin:0;flex:0 0 auto}
+.lrow.stale{opacity:.55}
+
+/* five tabs on a 360 px phone */
+@media(max-width:380px){.tabbar button{font-size:.68rem}.tabbar button span{font-size:1.15rem}}
+button.routebtn{border:0;font:inherit;font-weight:700;font-size:.88rem;cursor:pointer}

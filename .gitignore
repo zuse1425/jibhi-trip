@@ -1,0 +1,12 @@
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*.log
+.env*
+node_modules/
+__pycache__/
+.vscode/
+.idea/
+_site/
+tests/out/

@@ -1,5 +1,5 @@
 // Offline shell: app code only (no trip data). Trip data is cached in localStorage only after sign-in. Supabase traffic is never cached.
-const CACHE = "jibhi-trip-v4";
+const CACHE = "jibhi-trip-v5";
 const SHELL = ["./", "index.html", "app.css", "app.js", "config.js", "vendor/supabase.js", "manifest.webmanifest", "icons/icon-192.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
