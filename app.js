@@ -9,7 +9,7 @@
   const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => { const r = (Math.random() * 16) | 0; return (c === "x" ? r : (r & 3) | 8).toString(16); }));
 
   // ---------------- state ----------------
-  let S = { days: [], stops: [], suggestions: [], votes: [], comments: [], messages: [], members: [] };
+  let S = { days: [], stops: [], suggestions: [], votes: [], comments: [], messages: [], members: [], pages: {} };
   let sb = null, uid = null, myName = null, joined = false, online = navigator.onLine, editMode = false, tab = "plan", sugFilter = "open";
   let outbox = JSON.parse(localStorage.getItem(LS_OUT) || "[]");
 
@@ -73,7 +73,7 @@
     if (!window.supabase || !C.SUPABASE_URL) return;
     sb = window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
     const { data: { session } } = await sb.auth.getSession();
-    if (!session) { render(); if (navigator.onLine) showJoin(); return; }
+    if (!session) { showGate(navigator.onLine ? "" : "You're offline. Connect to sign in."); return; }
     await afterSignIn(session);
   }
   let lastEmail = "";
@@ -82,20 +82,22 @@
     const { data: name, error } = await sb.rpc("claim_membership", { p_trip: TRIP });
     if (error) {
       const cached = localStorage.getItem("jt-name");
-      if (/fetch|network|Failed/i.test(error.message) && cached) { joined = true; myName = cached; render(); updateSync(); return true; } // offline: keep working from the saved copy
-      toast(error.message); render(); return false;
+      // offline but signed in before on this phone: open the saved copy
+      if (/fetch|network|Failed/i.test(error.message) && cached && loadCache()) { joined = true; myName = cached; showApp(); return true; }
+      showGate(/fetch|network|Failed/i.test(error.message) ? "You're offline. Connect to sign in." : error.message); return false;
     }
-    if (!name) { toast(`${session.user.email || "This account"} isn't on the trip list`); await sb.auth.signOut(); uid = null; render(); return false; }
+    if (!name) { await sb.auth.signOut(); uid = null; showGate(`${session.user.email || "This account"} isn't on the trip list. Sign in with the account Naman added.`); return false; }
     joined = true; myName = name; localStorage.setItem("jt-name", myName);
-    await loadAll(); subscribe(); flush(); render(); return true;
+    loadCache(); await loadAll(); showApp(); subscribe(); flush(); return true;
   }
   async function loadAll() {
     const q = (t, o) => { let x = sb.from(t).select("*").eq("trip_id", TRIP); return o ? x.order(o) : x; };
-    const [d, s, g, v, c, m, mem] = await Promise.all([q("days", "sort"), q("stops"), q("suggestions", "created_at"), q("votes"), q("comments", "created_at"), q("messages", "created_at"), q("members")]);
+    const [d, s, g, v, c, m, mem, pg] = await Promise.all([q("days", "sort"), q("stops"), q("suggestions", "created_at"), q("votes"), q("comments", "created_at"), q("messages", "created_at"), q("members"), q("trip_pages")]);
     const ok = (r) => r && !r.error && r.data;
     if (ok(d) && d.data.length) S.days = d.data;
     if (ok(s) && s.data.length) S.stops = s.data;
     if (ok(g)) S.suggestions = g.data; if (ok(v)) S.votes = v.data; if (ok(c)) S.comments = c.data; if (ok(m)) S.messages = m.data; if (ok(mem)) S.members = mem.data;
+    if (ok(pg)) S.pages = Object.fromEntries(pg.data.map((r) => [r.id, r.html]));
     // re-apply anything still waiting in the outbox
     outbox.forEach(applyLocal);
     saveCache(); render();
@@ -115,7 +117,13 @@
     ch.subscribe((st) => { live = st === "SUBSCRIBED"; updateSync(); });
   }
   let live = false;
-  window.addEventListener("online", () => { online = true; if (!sb) connect(); else { loadAll(); flush(); } updateSync(); });
+  window.addEventListener("online", () => {
+    online = true;
+    if (!sb) connect();
+    else if (!joined) sb.auth.getSession().then(({ data }) => (data.session ? afterSignIn(data.session) : showGate()));
+    else { loadAll(); flush(); }
+    updateSync();
+  });
   window.addEventListener("offline", () => { online = false; updateSync(); });
   document.addEventListener("visibilitychange", () => { if (!document.hidden && sb && joined) { loadAll(); flush(); } });
 
@@ -124,9 +132,7 @@
   function showJoin() {
     if (!sb) { toast("Offline · sign in when you're back online"); return; }
     if (joined) return showAccount();
-    modal(`<h3>Sign in</h3><p class="muted">Use the Google account Naman added to the trip.</p>
-      <button type="button" class="gbtn" data-act="google"><svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.2C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6c4.5-4.2 6.9-10.3 6.9-17.7z"/><path fill="#FBBC05" d="M10.6 28.5c-.5-1.4-.8-2.9-.8-4.5s.3-3.1.8-4.5l-7.9-6.2C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6c-2.1 1.4-4.9 2.3-8.2 2.3-6.2 0-11.5-4.1-13.4-9.8l-7.9 6.2C6.6 42.6 14.6 48 24 48z"/></svg>Continue with Google</button>
-      <div class="mbtns"><button type="button" data-close>Just look</button></div>`, async () => true, { focus: false });
+    showGate();
   }
   async function googleSignIn() {
     try {
@@ -150,9 +156,26 @@
   }
   async function signOut() {
     if (!sb) return; $("#modal").close();
-    await sb.auth.signOut(); sb.removeAllChannels();
-    joined = false; uid = null; myName = null; live = false; localStorage.removeItem("jt-name");
-    render(); updateSync(); showJoin();
+    try { await sb.auth.signOut(); } catch (e) {}
+    [LS_CACHE, LS_OUT, LS_SEEN, "jt-name"].forEach((k) => localStorage.removeItem(k));
+    location.reload();
+  }
+  // ---------------- gate: nothing is rendered or fetched until signed in ----------------
+  function showGate(msg) {
+    $("#app").hidden = true; $("#tabbar").hidden = true;
+    $("#gate").hidden = false;
+    $("#gate-msg").textContent = msg || "Sign in with the Google account that's on the trip list.";
+    $("#gate [data-act=google]").hidden = false;
+  }
+  function showApp() {
+    $("#gate").hidden = true;
+    $("#app").hidden = false; $("#tabbar").hidden = false;
+    render(); showTab();
+  }
+  function renderPages() {
+    const P = S.pages || {};
+    for (const k of ["title", "lead", "reach", "know", "footer"]) { const el = $("#pg-" + k); if (el && el.dataset.v !== (P[k] || "")) { el.innerHTML = P[k] || ""; el.dataset.v = P[k] || ""; } }
+    if (P.title) document.title = P.title.replace(/^\W+/, "").trim();
   }
 
   // ---------------- render ----------------
@@ -161,7 +184,8 @@
   const live_stops = () => S.stops.filter((s) => !s.deleted);
 
   function render() {
-    renderNow(); renderPlan(); renderIdeas(); renderChat(); renderInfo(); updateSync();
+    if (!joined) return;
+    renderPages(); renderNow(); renderPlan(); renderIdeas(); renderChat(); renderInfo(); updateSync();
     $("#mename").textContent = joined ? myName : "Sign in";
     document.body.classList.toggle("editing", editMode);
     $("#editbar").hidden = !editMode;
@@ -430,12 +454,8 @@
 
   // ---------------- boot ----------------
   async function boot() {
-    if (!loadCache()) {
-      try { const r = await fetch("data/seed.json", { cache: "no-cache" }); const seed = await r.json(); S.days = seed.days; S.stops = seed.stops.map((s, i) => Object.assign({ id: "seed" + i }, s)); } catch (e) {}
-    }
-    render(); showTab();
-    setInterval(() => { renderNow(); if (tab === "plan") renderPlan(); }, 60000);
-    connect().catch((e) => { console.error(e); updateSync(); });
+    setInterval(() => { if (!joined) return; renderNow(); if (tab === "plan") renderPlan(); }, 60000);
+    connect().catch((e) => { console.error(e); showGate("Couldn't reach the server. Pull down to retry."); });
     if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
   }
   boot();

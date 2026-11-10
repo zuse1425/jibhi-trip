@@ -11,9 +11,10 @@ Group trip companion for 4 friends (Jibhi · Jalori · Tirthan, 13–16 Nov 2026
 New work: `/speckit-specify` → `/speckit-clarify` (optional) → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`. Keep `tasks.md` checkboxes current.
 
 ## Stack & files
-- `index.html` (shell + static info sections), `app.css`, `app.js` (all logic), `config.js` (Supabase URL + publishable key).
+- `index.html` (shell + sign-in gate only, **no trip content**), `app.css`, `app.js` (all logic), `config.js` (Supabase URL + publishable key).
+- Nothing trip-specific is rendered or fetched before Google sign-in. Static sections (title, getting there, good to know, footer) live in the members-only `trip_pages` table; plan data in `days`/`stops`.
 - `vendor/supabase.js` = supabase-js v2.119 UMD (no CDN). No build step.
-- `supabase/schema.sql` (idempotent; **never put the passcode in it**), `supabase/seed.sql`, `data/seed.json` (offline fallback, keep in sync with seed.sql).
+- `supabase/schema.sql` (idempotent; **never put the passcode in it**), `supabase/seed.sql`, `data/seed.json` (reference copy only, **not deployed**; offline = localStorage cache written after sign-in, wiped on sign-out).
 - Deploy: push to `main` → `.github/workflows/pages.yml` → GitHub Pages.
 
 ## Supabase
